@@ -1,0 +1,137 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var debug = require('debug')('Timer:server');
+var http = require('http');
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+var io = require('socket.io')(server);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normalize a port into a number, string, or false.
+ */
+
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Event listener for HTTP server "error" event.
+ */
+
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+
+function onListening() {
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+}
+
+//player-data cookie constructor
+
+/*function setCookie(cname, cvalue, exdays){
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = 'expires=' + d.toUTCString();
+    document.cookie = cname + '=' + cvalue + '; ' + expires;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    }
+    return "";
+}
+module.exports = getCookie();
+
+io.on('connection', function (socket) {
+    socket.on('error', function (err) { console.error(err.stack); });
+    socket.on('playerCall', function(data) {
+        var p = data.player;
+        var r = data.region;
+        console.log(data);
+        //URL constructor
+        console.log(p);
+            najax({
+                url: 'https://' + r + '.api.pvp.net/api/lol/' + r + '/v1.4/summoner/by-name/' + p + '?api_key=804a0b1e-6f03-4124-94eb-7b64f48c5701' + '&callback=?',
+                type: 'POST',
+                dataType: 'json',
+                success: function (resp) {
+                    socket.emit('playerCallBoolean', {playerData: resp, playerName: p, playerRegion: r});
+                    setCookie("playerName", p, 30);
+                 },
+                error: function (e) {
+                    socket.emit('playerCallBoolean', false);
+                    console.log('Error: '+ e.toString());
+                }
+            });
+        });
+    });*/
+

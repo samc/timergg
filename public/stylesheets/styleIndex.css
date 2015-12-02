@@ -1,0 +1,574 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+html {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+caption, th, td {
+  text-align: left;
+  font-weight: normal;
+  vertical-align: middle;
+}
+
+q, blockquote {
+  quotes: none;
+}
+q:before, q:after, blockquote:before, blockquote:after {
+  content: "";
+  content: none;
+}
+
+a img {
+  border: none;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
+  display: block;
+}
+
+@keyframes handle {
+  from {
+    height: 0;
+  }
+  to {
+    left: 5px;
+  }
+}
+@-webkit-keyframes handle {
+  from {
+    height: 0;
+  }
+  to {
+    left: 5px;
+  }
+}
+@keyframes fadeRight {
+  from {
+    opacity: 0;
+    left: -100px;
+  }
+  to {
+    opacity: 1;
+    left: 0px;
+  }
+}
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    top: -100px;
+  }
+  to {
+    opacity: 1;
+    top: 0px;
+  }
+}
+/* Firefox < 16 */
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadeRight {
+  from {
+    opacity: 0;
+    left: -100px;
+  }
+  to {
+    opacity: 1;
+    left: 0px;
+  }
+}
+@-webkit-keyframes fadeDown {
+  from {
+    opacity: 0;
+    top: -100px;
+  }
+  to {
+    opacity: 1;
+    top: 0px;
+  }
+}
+/* Internet Explorer */
+/* Opera < 12.1 */
+@keyframes navUp {
+  from {
+    top: 0px;
+  }
+  to {
+    top: -50px;
+  }
+}
+@keyframes navDown {
+  from {
+    opacity: 0;
+    top: -50px;
+  }
+  to {
+    opacity: .7;
+    top: 0px;
+  }
+}
+@-webkit-keyframes navUp {
+  from {
+    top: 0px;
+  }
+  to {
+    top: -50px;
+  }
+}
+@-webkit-keyframes navDown {
+  from {
+    opacity: 0;
+    top: -50px;
+  }
+  to {
+    opacity: .7;
+    top: 0px;
+  }
+}
+strong {
+  font-weight: bold;
+  color: red;
+}
+
+.cf:before,
+.cf:after {
+  content: "";
+  display: table;
+}
+
+.cf:after {
+  clear: both;
+}
+
+html,
+body {
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #fff;
+  margin: 0;
+}
+
+.topContainer nav {
+  z-index: 10;
+  padding-top: 5px;
+  font-family: 'Montserrat';
+  font-size: 27px;
+  height: 37px;
+  text-decoration: none;
+  opacity: 0.7;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  background-color: #1B1B1B;
+  box-shadow: 0px 0px 20px 0px #1B1B1B;
+  width: 100%;
+}
+.topContainer nav.nav-up {
+  content: '';
+  -webkit-animation: navUp 1s;
+  animation: navUp 1s;
+  top: -50px;
+}
+.topContainer nav.nav-down {
+  content: '';
+  -webkit-animation: navDown .5s;
+  animation: navDown .5s;
+  top: 0px;
+}
+
+.logo {
+  -webkit-animation: fadeRight 2s;
+  animation: fadeRight 2s;
+  padding-left: 18%;
+  position: relative;
+}
+.logo span:hover {
+  cursor: pointer;
+}
+
+nav ul {
+  text-align: center;
+  float: right;
+  padding-right: 18%;
+  position: relative;
+  top: -32px;
+}
+
+nav ul li {
+  display: inline-block;
+  margin-right: -4px;
+  margin-left: -4px;
+  -webkit-animation: fadeDown 2s;
+  animation: fadeDown 2s;
+}
+
+nav ul li a {
+  overflow: hidden;
+  padding: 10px 15px;
+  position: relative;
+  text-decoration: none;
+  font: 16px 'Montserrat';
+  color: #ADADAD;
+}
+
+nav ul li a:hover {
+  color: #2EB8E6;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+nav ul li a:after {
+  z-index: 20;
+  position: absolute;
+  content: "";
+  left: 0;
+  bottom: 0;
+  border-radius: 25%;
+  width: 100%;
+  height: 0px;
+  text-decoration: none;
+  background-color: #2EB8E6;
+  -webkit-transition: height .1s linear;
+  transition: height .1s linear;
+}
+
+nav ul li a:hover:after {
+  height: 8%;
+}
+
+.centerHeader {
+  position: relative;
+  top: 230px;
+  text-align: center;
+}
+
+.subHeader {
+  position: relative;
+  top: 390px;
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+  font: 120px 'Montserrat';
+  position: absolute;
+  width: 100%;
+  -webkit-animation: fadeDown 3s;
+  animation: fadeDown 3s;
+}
+
+h2 {
+  content: "When timing is everything...";
+  text-align: center;
+  font: 30px 'Montserrat';
+  position: relative;
+  color: #1B1B1B;
+  width: 100%;
+  -webkit-animation: fadeDown 2s;
+  animation: fadeDown 2s;
+}
+
+.summonerInput {
+  background: #f4f4f4;
+  background: rgba(244, 244, 244, 0.79);
+  border: 1px solid #d3d3d3;
+  left: 50%;
+  padding: 2px 5px;
+  position: absolute;
+  margin-left: -200px;
+  top: 520px;
+  width: 400px;
+  box-shadow: 0 4px 9px rgba(0, 0, 0, 0.37);
+  -moz-box-shadow: 0 4px 9px rgba(0, 0, 0, 0.37);
+  -webkit-box-shadow: 0 4px 9px rgba(0, 0, 0, 0.37);
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+}
+
+.summonerInput input, .summonerInput a.button {
+  float: left;
+}
+
+.summonerInput input {
+  background: #fefefe;
+  border: none;
+  font: 12px/12px 'HelveticaNeue', Helvetica, Arial, sans-serif;
+  margin-right: 5px;
+  padding: 10px;
+  width: 277px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.4) inset, 1px 1px 1px rgba(255, 255, 255, 0.75);
+  -moz-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4) inset, 1px 1px 1px rgba(255, 255, 255, 0.75);
+  -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.4) inset, 1px 1px 1px rgba(255, 255, 255, 0.75);
+  border-radius: 9px;
+  -moz-border-radius: 9px;
+  -webkit-border-radius: 9px;
+}
+
+.summonerInput input:focus {
+  outline: none;
+  box-shadow: 0 0 4px #0d76be inset;
+  -moz-box-shadow: 0 0 4px #0d76be inset;
+  -webkit-box-shadow: 0 0 4px #0d76be inset;
+}
+
+.summonerInput input::-webkit-input-placeholder {
+  font-style: italic;
+  line-height: 15px;
+}
+
+.summonerInput input:-moz-placeholder {
+  font-style: italic;
+  line-height: 15px;
+}
+
+.summonerInput a.button {
+  background: #2EB8E6;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#34adec', endColorstr='#2691dc',GradientType=0 );
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font: 13px/13px 'Montserrat';
+  padding: 10px;
+  text-decoration: none;
+  text-align: center;
+  width: 106px;
+  box-shadow: 0 0 2px #2692dd inset;
+  -moz-box-shadow: 0 0 2px #2692dd inset;
+  -webkit-box-shadow: 0 0 2px #2692dd inset;
+  border-radius: 9px;
+  -moz-border-radius: 9px;
+  -webkit-border-radius: 9px;
+}
+
+.summonerInput a.button:hover {
+  opacity: .9;
+}
+
+.clock {
+  z-index: -1;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  visibility: visible;
+  width: 1200px;
+  top: -195px;
+  border-radius: 50%;
+  border: 35px solid #EEEEEE;
+  background-color: #fff;
+  position: relative;
+}
+
+.hand {
+  position: absolute;
+  background-color: #EEEEEE;
+  -webkit-transition: -webkit-transform 0.5s ease;
+  transition: transform 0.5s ease;
+  -webkit-transform-origin: 50% 100%;
+  -ms-transform-origin: 50% 100%;
+  transform-origin: 50% 100%;
+}
+
+.center {
+  left: 49.17%;
+  top: 49.17%;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-left: 0px;
+}
+
+.hour {
+  height: 20%;
+  top: 30%;
+  left: 50%;
+  width: 6px;
+  margin-left: -1.5px;
+}
+
+.minute {
+  height: 30%;
+  top: 20%;
+  left: 50%;
+  width: 6px;
+  margin-left: -1px;
+}
+
+.second {
+  height: 45%;
+  top: 5%;
+  left: 50%;
+  width: 3px;
+  margin-left: -0.5px;
+}
+
+.regionSel {
+  overflow: hidden;
+  background: #EEEEEE;
+  border: 1px solid #EEEEEE;
+  left: 50%;
+  position: absolute;
+  margin-left: -165px;
+  top: 570px;
+  width: auto;
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  font: 10px 'Montserrat';
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+input[type="radio"] + label {
+  padding-left: 6px;
+  padding-right: 6px;
+  color: white;
+  border-right: 1px inset;
+  border-left: 1px inset;
+  border-color: #EEEEEE;
+  margin-right: -1.9px;
+  margin-left: -1.9px;
+  background-color: #ADADAD;
+  display: inline-block;
+  height: 20px;
+  vertical-align: middle;
+  padding-top: 3px;
+}
+
+input[type="radio"]:checked + label {
+  background-color: #2EB8E6;
+}
+
+label:hover {
+  cursor: pointer;
+}
+
+.aboutContainer {
+  text-align: center;
+  position: relative;
+  padding: 60px 13%;
+  font: 30px 'Montserrat';
+  color: #fff;
+  width: 100%;
+  top: -100px;
+  opacity: 0.7;
+  background-color: #2EB8E6;
+  display: block;
+  overflow: hidden;
+  box-shadow: 0px 0px 20px 0px #1B1B1B;
+}
+.aboutContainer button {
+  display: inline-block;
+  text-decoration: none;
+  font: 30px 'Montserrat';
+  color: red;
+  brackground-color: transparent;
+  border: 3px solid red;
+  border-radius: 25px;
+  position: relative;
+  top: 20px;
+  padding: 0 auto;
+  margin: 30px;
+  background-size: 200% 100%;
+  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 50%, #ff0000 50%);
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0) 50%, #ff0000 50%);
+  -webkit-transition: background-position 0.3s cubic-bezier(0.19, 1, 0.22, 1) 0.1s, color 0.5s ease 0s, background-color 0.5s ease;
+  transition: background-position 0.3s cubic-bezier(0.19, 1, 0.22, 1) 0.1s, color 0.5s ease 0s, background-color 0.5s ease;
+}
+.aboutContainer button:focus {
+  outline: 0;
+}
+.aboutContainer button:hover {
+  color: #fff;
+  background-color: red;
+  cursor: pointer;
+  background-position: -100% 100%;
+}
+
+.featuresContainer {
+  text-align: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+  top: -100px;
+  display: block;
+  overflow: auto;
+  opacity: 0.7;
+  background-color: white;
+}
+
+.blockWrapper {
+  width: 100%;
+  text-align: center;
+  position: relative;
+  padding: 0;
+}
+
+.block {
+  display: inline-block;
+  padding: 50px;
+}
+.block h {
+  font: 42px 'Montserrat';
+  padding: 0 auto;
+}
+.block p {
+  color: black;
+  font: 18px 'Montserrat';
+  max-width: 300px;
+  min-width: 300px;
+  text-align: center;
+  padding: 20px 0px;
+}
+.alert {
+  display: none;
+  width: 50%;
+  margin: auto;
+  text-align: center;
+  position: relative;
+  top: 410px;
+}
