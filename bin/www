@@ -6,7 +6,14 @@
 
 var app = require('../app');
 var debug = require('debug')('Timer:server');
+var https = require('https');
 var http = require('http');
+var fs = require('fs');
+
+var options = {
+  key: fs.readFileSync('server.enc.key'),
+  cert: fs.readFileSync('certificate-264533.crt')
+};
 
 /**
  * Get port from environment and store in Express.
@@ -20,7 +27,6 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-var io = require('socket.io')(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -89,49 +95,4 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
-
-//player-data cookie constructor
-
-/*function setCookie(cname, cvalue, exdays){
-    var d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    var expires = 'expires=' + d.toUTCString();
-    document.cookie = cname + '=' + cvalue + '; ' + expires;
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1);
-        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
-    }
-    return "";
-}
-module.exports = getCookie();
-
-io.on('connection', function (socket) {
-    socket.on('error', function (err) { console.error(err.stack); });
-    socket.on('playerCall', function(data) {
-        var p = data.player;
-        var r = data.region;
-        console.log(data);
-        //URL constructor
-        console.log(p);
-            najax({
-                url: 'https://' + r + '.api.pvp.net/api/lol/' + r + '/v1.4/summoner/by-name/' + p + '?api_key=804a0b1e-6f03-4124-94eb-7b64f48c5701' + '&callback=?',
-                type: 'POST',
-                dataType: 'json',
-                success: function (resp) {
-                    socket.emit('playerCallBoolean', {playerData: resp, playerName: p, playerRegion: r});
-                    setCookie("playerName", p, 30);
-                 },
-                error: function (e) {
-                    socket.emit('playerCallBoolean', false);
-                    console.log('Error: '+ e.toString());
-                }
-            });
-        });
-    });*/
 
