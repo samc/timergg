@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<!--
+      ___                       ___           ___           ___           ___           ___
+     /\  \          ___        /\__\         /\  \         /\  \         /\  \         /\  \
+     \:\  \        /\  \      /::|  |       /::\  \       /::\  \       /::\  \       /::\  \
+      \:\  \       \:\  \    /:|:|  |      /:/\:\  \     /:/\:\  \     /:/\:\  \     /:/\:\  \
+      /::\  \      /::\__\  /:/|:|__|__   /::\~\:\  \   /::\~\:\  \   /:/  \:\  \   /:/  \:\  \
+     /:/\:\__\  __/:/\/__/ /:/ |::::\__\ /:/\:\ \:\__\ /:/\:\ \:\__\ /:/__/_\:\__\ /:/__/_\:\__\
+    /:/  \/__/ /\/:/  /    \/__/~~/:/  / \:\~\:\ \/__/ \/_|::\/:/  / \:\  /\ \/__/ \:\  /\ \/__/
+   /:/  /      \::/__/           /:/  /   \:\ \:\__\      |:|::/  /   \:\ \:\__\    \:\ \:\__\
+   \/__/        \:\__\          /:/  /     \:\ \/__/      |:|\/__/     \:\/:/  /     \:\/:/  /
+                 \/__/         /:/  /       \:\__\        |:|  |        \::/  /       \::/  /
+                               \/__/         \/__/         \|__|         \/__/         \/__/
+
+		                 Copyright © 2016 TIMER.GG. All rights reserved.
+-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <link rel="shortcut icon" type="image/png" href="../images/fav.ico"/>
+
+    <link rel='stylesheet' href="../stylesheets/styleIndex.css"/>
+    <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+          integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
+          crossorigin="anonymous">
+
+    <meta name="description"
+          content="TIMER.GG is a League of Legends voice activated timing application equipped with both audio and visual feedback for both player and objective cool downs.">
+    <meta name="keywords" content="league of legends,lol,lol timer,timer,lol summoners, timer gg, ">
+
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="../scripts/angular.min.js"></script>
+    <script type="text/javascript" src="../scripts/index/clock.js"></script>
+    <script type="text/javascript" src="../scripts/index/scrollAnimation.js"></script>
+    <script type="text/javascript" src="../scripts/playerValidation.js"></script>
+    <script src="
+https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js" type="text/javascript"></script>
+
+</head>
+<body>
+<div class="topContainer" id="topContainer">
+    <nav class="nav-down">
+        <div class="logo" href="">
+            <span style="color: #a4ba53; font-weight: 700;" href="index.html">TIMER</span>
+            <span style="color: #ADADAD; font-weight: 700;" href="index.html">.</span>
+            <span style="color: #a4ba53; font-weight: 700;" href="index.html">GG</span>
+        </div>
+
+        <ul href="=">
+            <li><a class="standard-nav" id="#aboutContainer">About</a></li>
+            <li><a class="standard-nav" id="#featuresContainer">Features</a></li>
+            <li><a class="standard-nav" id="#faqContainer">FAQ</a></li>
+            <li><a class="try-it-out" href="/tutorial">Try It Out</a></li>
+        </ul>
+
+    </nav>
+</div>
+
+<div class="centerContainer">
+    <div class="centerHeader" href="=">
+        <h1 class="centerHeader">TIMER.GG</h1>
+
+        <h2 class="subHeader">When timing is everything...</h2>
+    </div>
+
+    <div class="summoner-wrapper">
+        <form class="summonerInput cf" id="summoner-input" action="/" method="POST">
+            <input type="text" name="field" placeholder="Input summoner name in active game"/>
+            <input id="submit" type="submit" value="Go" class="hidden"/>
+            <label for="submit"><strong><a class="button">submit</a></strong></label>
+        </form>
+    </div>
+
+    <div class="region-wrapper">
+        <div class="regionSel">
+            <input type="radio" name="region" id="NA" value="NA" checked="checked">
+            <label for="NA" class="tip">NA<span class="label-helper"></span></label>
+            <input type="radio" name="region" id="EUW" value="EUW">
+            <label for="EUW" class="tip">EUW<span class="label-helper"></span></label>
+            <input type="radio" name="region" id="EUNE" value="EUNE">
+            <label for="EUNE" class="tip">EUNE<span class="label-helper"></span></label>
+            <input type="radio" name="region" id="BR" value="BR">
+            <label for="BR" class="tip">BR<span class="label-helper"></span></label>
+            <input type="radio" name="region" id="TR" value="TR">
+            <label for="TR" class="tip">TR<span class="label-helper"></span></label>
+            <input type="radio" name="region" id="RU" value="RU">
+            <label for="RU" class="tip">RU<span class="label-helper"></span></label>
+            <input type="radio" name="region" id="LAN" value="LAN">
+            <label for="LAN" class="tip">LAN<span class="label-helper"></span></label>
+            <input type="radio" name="region" id="LAS" value="LAS">
+            <label for="LAS" class="tip">LAS<span class="label-helper"></span></label>
+            <input type="radio" name="region" id="OCE" value="OCE">
+            <label for="OCE" class="tip">OCE<span class="label-helper"></span></label>
+            <input type="radio" name="region" id="KR" value="KR">
+            <label for="KR" class="tip">KR<span class="label-helper"></span></label>
+        </div>
+    </div>
+
+
+    <div class="adv-long">
+        <!-- adv-long -->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:728px;height:90px"
+             data-ad-client="ca-pub-7940656770756102"
+             data-ad-slot="3544402470">
+        </ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    <div class="clock" href="~">
+        <div class="hand center"></div>
+        <div class="hand hour"></div>
+        <div class="hand minute"></div>
+        <div class="hand second"></div>
+    </div>
+    <div class="alert alert-warning warning alert-dismissible" style="display: block; position: relative;" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+        Due to Riot API maintenance, spectator data cannot be shown at this time.
+    </div>
+    <div class="alert alert-danger" role="alert">
+        <strong>Oh Snap! </strong> <span
+                class="alert-cont">Active game not found, make sure summoner is in active game.</span>
+    </div>
+
+</div>
+
+<div id="aboutContainer" class="aboutContainer">
+    <p data-sr='enter top, hustle 30px, over 1s'>
+        TIMER.GG is an all inclusive, <strong>voice activated</strong>, timing system for League of Legends. Our system
+        accompanies you with on demand feedback for local in-game timers, as well as a ton of nifty gadgets that are
+        guaranteed to help improve your play.</p>
+
+    <p data-sr='enter bottom, hustle 30px, over 1s'>
+        Simply load up the game timer interface by searching your summoner name in the box above, enable your
+        microphone, and start dominating the Rift!</p>
+</div>
+
+<div id="featuresContainer"
+     class="featuresContainer">
+
+    <div class="blockWrapper">
+
+        <div class="block">
+            <i class="fa fa-calculator"></i>
+
+            <h2 data-sr='flip 90deg, over .5s'>Calculations</h2>
+
+            <p data-sr='flip 90deg, over 1s'>Let TIMER.GG do the thinking for you. Our software can dynamically
+                calculate in-game instances of distortion enchants and player masteries to insure perfect timing
+                accuracy.</p>
+        </div>
+        <div class="block">
+            <i class="fa fa-microphone"></i>
+
+            <h2 data-sr='flip 90deg, over .5s'>Voice</h2>
+
+            <p data-sr='flip 90deg, over 1s'>Completely control the player dashboard with simple voice commands. Hands
+                free timer instances not only save time, but also aim to minimize distractions and maintain your focus
+                on the important stuff. </p>
+        </div>
+        <div class="block">
+            <i class="fa fa-bell"></i>
+
+            <h2 data-sr='flip 90deg, over .5s'>Extras</h2>
+
+            <p data-sr='flip 90deg, over 1s'>On top of bringing you the most innovative League of Legends timing system,
+                TIMER.GG is equipped with helpful gadgets that aim to hone the core fundamentals of wave control and map
+                awareness.</p>
+        </div>
+    </div>
+</div>
+
+<script src="../scripts/scrollReveal.min.js"></script>
+<script>
+
+    setTimeout(function () {
+        window.sr = new scrollReveal();
+    }, 1000);
+
+</script>
+<div id="faqContainer" class="faqContainer">
+
+    <div class="faq-header"><span>== FAQ ==</span></div>
+
+    <section class="faq">
+
+        <ul class="categories">
+            <li><a class="selected" href="#basics">Basics</a></li>
+            <li><a href="#voice-activation">Voice Activation</a></li>
+            <li><a href="#language">Language</a></li>
+        </ul>
+        <!-- categories -->
+
+        <div class="faq-items">
+            <ul id="basics" class="faq-group">
+                <li class="faq-title"><h2>Basics</h2></li>
+                <li>
+                    <a class="trigger" href="#0">Why isn't my player search working?</a>
+
+                    <div class="faq-content">
+                        <p>TIMER.GG relies on the player being in an active game to initiate proper timers. The match
+                            must have started before a search can be made for the target player (at least on the loading
+                            screen or later). The player dashboard will not load if you are in champ select.</p>
+                    </div>
+                    <!-- faq-content -->
+                </li>
+
+                <li>
+                    <a class="trigger" href="#0">Do I have to sign up?</a>
+
+                    <div class="faq-content">
+                        <p>Nope! TIMER.GG is a full access free application for all of your League of Legends timing
+                            needs. Anytime you're in a game, just input your summoner name above, and you'll be taken to
+                            the player dashboard. There you have complete access to all the application has to offer,
+                            from voice activation, verbal reminders, and much more!</p>
+                    </div>
+                    <!-- faq-content -->
+                </li>
+
+                <li>
+                    <a class="trigger" href="#0">I have a sweet idea for you to implement!</a>
+
+                    <div class="faq-content">
+                        <p>I'm all about community collaboration. If you have an idea that you think would work well at
+                            TIMER.GG, feel free to send it my way at <strong>support@timer.gg</strong> or on the
+                            <strong><a href="https://www.reddit.com/r/timergg">/r/timergg</a></strong> subreddit. Who
+                            knows, it might just find it's way onto the app in the near future!</p>
+                    </div>
+                    <!-- faq-content -->
+                </li>
+
+                <li>
+                    <a class="trigger" href="#0">How can I support the project?</a>
+
+                    <div class="faq-content">
+                        <p>I am currently running this development solo. I would greatly appreciate if you were to
+                            whitelist TIMER.GG on any ad blocking extensions, but hey, I of all people know ads can get
+                            a bit pesky. As I don't have much of a means to professionally market the application,
+                            telling your friends and fellow summoners about TIMER.GG helps a ton! For the few generous
+                            internet goers with an extra buck to spare, you can also donate to the development <label
+                                    for="mySubmit"><strong><a>here</a></strong></label>.</p>
+                    </div>
+                    <!-- faq-content -->
+                </li>
+            </ul>
+            <!-- faq-group -->
+
+            <ul id="voice-activation" class="faq-group">
+                <li class="faq-title"><h2>Voice Activation</h2></li>
+
+                <li>
+                    <a class="trigger" href="#0">I'm told voice recognition isn't supported by my browser?</a>
+
+                    <div class="faq-content">
+                        <p>Because voice recognition is relatively new to the modern browser, Chrome is currently the
+                            only stable platform for voice recording integration (support for Firefox should be coming
+                            very shortly). It may be time to ditch that old browser you've been holding onto for a while
+                            <strong>**cough** IE **cough**</strong> and trade it in for a newer model!</p>
+                    </div>
+                    <!-- faq-content -->
+                </li>
+
+                <li>
+                    <a class="trigger" href="#0">I don't have a working mic, can I still use the player dashboard?</a>
+
+                    <div class="faq-content">
+                        <p>Yes, you can! Though voice activation makes controlling the dashboard much easier, all
+                            accessible voice commands can be triggered using the dashboard GUI. This includes both
+                            objective and player timers, as well as a nifty distortion enchant toggle.</p>
+                    </div>
+                    <!-- faq-content -->
+                </li>
+
+                <li>
+                    <a class="trigger" href="#0">I have a working mic, but it isn't recording commands?</a>
+
+                    <div class="faq-content">
+                        <p>When you first enter the player dashboard, a popup window should appear asking for permission
+                            to access your microphone. If you accidentally declined the request, or something happened
+                            and you weren't sent the request, no worries! Just click the icon in all the way to the
+                            right of your URL, as seen in the image below (chrome only).</p>
+                        <img style="padding: 10px 300px;" src="../images/index/chrome.png">
+
+                        <p>In the dialogue that opens, make sure to select <strong>"Always allow timer.gg to access your
+                                microphone"</strong>. From this window you can also change what mic you wish to record
+                            from by selecting it in the drop down menu.</p>
+                    </div>
+                    <!-- faq-content -->
+                </li>
+
+            </ul>
+            <!-- faq-group -->
+
+            <ul id="language" class="faq-group">
+                <li class="faq-title"><h2>language</h2></li>
+
+                <li>
+                    <a class="trigger" href="#0">What languages are supported?</a>
+
+                    <div class="faq-content">
+                        <p>Currently, the only active language is English. Due to the amount of time it takes to make
+                            native language references to the unique champion names and being a solely native English
+                            speaker myself, global language integration is not necessarily my highest priority. However,
+                            if the application gets enough traction in other regions, I will gladly dedicate the time to
+                            setup language references to respective regions.</p>
+                    </div>
+                    <!-- faq-content -->
+                </li>
+
+            </ul>
+            <!-- faq-group -->
+
+        </div>
+        <a href="#0" class="cd-close-panel">Close</a>
+    </section>
+</div>
+
+<div class="mail">
+    <a class="email" href="mailto:master@timer.gg">
+        <i class="glyphicon glyphicon-envelope"></i>
+        <span>support@timer.gg</span>
+    </a>
+</div>
+
+<div class="footer">
+    <div class="foot-wrap">
+        <div class="copy-right">Copyright &#xa9 2016 timer.gg | <a href="/legal">Legal</a> | <label for="mySubmit"><a>donate</a></label>
+        </div>
+
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+            <input type="hidden" name="cmd" value="_s-xclick">
+            <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+            <input id="mySubmit" type="submit" value="Go" class="hidden"/>
+        </form>
+
+        <div class="back-to-top"><a id="#topContainer">back to top</a></div>
+    </div>
+</div>
+
+</body>
+</html>
