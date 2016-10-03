@@ -42,7 +42,7 @@ router.get('/', function (req, res) {
         ru: 'RU'
     };
 
-    var champion = [{
+    /*var champion = [{
 
         id: ['atrix', 'attracts'],
         name: 'Aatrox',
@@ -582,6 +582,7 @@ router.get('/', function (req, res) {
         }
         console.log(champion)
     });
+     */
 
     if (checkInputIsAlphaNumeric(splitName) === null && checkInputIsAlphaNumeric(reg) === null && isAdequateLength(splitName)) {
         var eTeam = [];
