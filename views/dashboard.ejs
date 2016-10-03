@@ -1,0 +1,2211 @@
+<!DOCTYPE HTML>
+<!--
+      ___                       ___           ___           ___           ___           ___
+     /\  \          ___        /\__\         /\  \         /\  \         /\  \         /\  \
+     \:\  \        /\  \      /::|  |       /::\  \       /::\  \       /::\  \       /::\  \
+      \:\  \       \:\  \    /:|:|  |      /:/\:\  \     /:/\:\  \     /:/\:\  \     /:/\:\  \
+      /::\  \      /::\__\  /:/|:|__|__   /::\~\:\  \   /::\~\:\  \   /:/  \:\  \   /:/  \:\  \
+     /:/\:\__\  __/:/\/__/ /:/ |::::\__\ /:/\:\ \:\__\ /:/\:\ \:\__\ /:/__/_\:\__\ /:/__/_\:\__\
+    /:/  \/__/ /\/:/  /    \/__/~~/:/  / \:\~\:\ \/__/ \/_|::\/:/  / \:\  /\ \/__/ \:\  /\ \/__/
+   /:/  /      \::/__/           /:/  /   \:\ \:\__\      |:|::/  /   \:\ \:\__\    \:\ \:\__\
+   \/__/        \:\__\          /:/  /     \:\ \/__/      |:|\/__/     \:\/:/  /     \:\/:/  /
+                 \/__/         /:/  /       \:\__\        |:|  |        \::/  /       \::/  /
+                               \/__/         \/__/         \|__|         \/__/         \/__/
+
+		                 Copyright © 2016 TIMER.GG. All rights reserved.
+-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <link rel="shortcut icon" type="image/png" href="../images/fav.ico"/>
+    <link rel='stylesheet' href="../stylesheets/styleDashboard.css"/>
+    <link href="//fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link rel='stylesheet' href="../stylesheets/trackpad-scroll-emulator.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link href="../stylesheets/opentip.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css"/>
+
+    <meta name="description"
+          content="TIMER.GG is a League of Legends voice activated timing application equipped with both audio and visual feedback for both player and objective cool downs.">
+    <meta name="keywords" content="league of legends,lol,lol timer,timer,lol summoners, timer gg, ">
+
+    <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="../scripts/angular.min.js"></script>
+    <script src="../scripts/jquery.trackpad-scroll-emulator.min.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
+    <script type="text/javascript" src="../scripts/dashboard/leftContainer.js"></script>
+    <script type="text/javascript" src="../scripts/dashboard/middleContainer.js"></script>
+    <script type="text/javascript" src="../scripts/dashboard/rightContainer.js"></script>
+    <script type="text/javascript" src="../scripts/playerValidation.js"></script>
+    <script src="../scripts/dashboard/opentip-jquery.min.js"></script>
+    <script src="../scripts/arrive.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.0.0/annyang.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+            crossorigin="anonymous"></script>
+    <script src="../scripts/dashboard/Sortable.min.js"></script>
+    <script src="../scripts/moment.js"></script>
+    <script type="text/javascript" src="https://rawgithub.com/hiddentao/google-tts/master/google-tts.min.js"></script>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" onerror="adBlockFunction()"></script>
+
+</head>
+<body ng-app="app">
+<div class="left-container" data-ng-controller="leftController">
+
+    <div class="logo" href="/">
+        <a href="/" style="text-decoration: none;">
+            <span style="color: #a9c056; font-weight: 700;" href="/">TIMER</span>
+            <span style="color: #535559; font-weight: 700;" href="/">.</span>
+            <span style="color: #a9c056; font-weight: 700;" href="/">GG</span>
+        </a>
+    </div>
+
+    <div class="player-wrapper">
+        <span class="player-name"><%= playerInstance %></span>
+        <i class="fa fa-refresh fa-spin refresh" style="display: none;"></i>
+        <i data-ng-click='playerRef()' class="glyphicon glyphicon-log-in"></i>
+    </div>
+
+    <div class="nav-divider"></div>
+
+    <div class="tse-scrollable scroll-wrap">
+        <div class="tse-content">
+
+            <ul class="section-headers" id="sectionList">
+                <li data-ng-repeat="section in sections">
+
+                    <div ng-click="chooseSection(section.id)" class="header-block {{section.header}}">
+                        <i class="{{section.icon}}"></i>
+                        <a>{{section.header}}</a>
+                    </div>
+
+                    <div class="option-instance {{section.header}}">
+                        <ul data-ng-repeat="option in section.options">
+                            <li>
+                                <div class="option-block-{{section.header}}-{{option.id}} opt opt-{{section.header}}">
+                                    <i class="{{option.icon}}"></i>
+                                    <a>{{option.name}}</a>
+
+                                    <div data-ng-show="checkIfExtra(section.header)" class="toggle" ng-click="">
+                                        <input type="checkbox" value="None" id="slider{{option.id}}" name="check">
+                                        <label for="slider{{option.id}}" class="slider{{option.id}}"></label>
+                                    </div>
+                                    <div data-ng-show="checkIfNight(option.name)" class="toggle" ng-click="">
+                                        <input type="checkbox" value="None" id="night-slider" name="check">
+                                        <label for="night-slider" class="night-slider-label"></label>
+                                    </div>
+
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                    {{initiateScroll()}}
+                </li>
+            </ul>
+            <div class="nav-divider"></div>
+
+            <div class="jumbotron">
+                <p id="jumbo-header">Follow the development. Head over to our subreddit!</p>
+
+                <p><a id="jumbo-button" class="btn btn-primary btn-lg btn-jumbo" href="https://www.reddit.com/r/timergg"
+                      role="button">/r/timergg</a></p>
+            </div>
+
+            <div class="nav-divider"></div>
+
+            <div class="link-group">
+                <a href="/#aboutContainer">About</a>
+                <a href="/#faqContainer">FAQ</a>
+                <a href="https://www.reddit.com/r/timergg">Help</a>
+                <a href="/developers">Developers</a>
+                <a href="/legal">Legal</a>
+                <a href="" onclick="$('.donation').submit();">Donate</a>
+            </div>
+
+            <form class="donation" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----MIIHLwYJKoZIhvcNAQcEoIIHIDCCBxwCAQExggEwMIIBLAIBADCBlDCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb20CAQAwDQYJKoZIhvcNAQEBBQAEgYBB6aXsTSevK8jLCLMk/Ca/zgTUZVIg/cLjWEyIX+x9sccl5u55B73+AsKWlY6uZLTjel2Cp2Nn8wxApEgpT8mVlbgqqXCPGNdj9D/GIsD9x1UVrhEWPix2KbmWGklzObJCJBrxR/x2iCVZlKgP0fFgrUioDooW8oGLdvTgng4BfTELMAkGBSsOAwIaBQAwgawGCSqGSIb3DQEHATAUBggqhkiG9w0DBwQIx+6p4jjrStOAgYhdxvu+265pGmh2Ea3HAb5IkMP8fnx1DN5DDPEp4ny9KsFTw1nDgWAtgNB3vPUj/ww/ynn79k+6z6g+D7og4T1K5Y9U+swF5M+q1mib10yZaDpa4YHTca64LlehSihamV7HkelFE6YAL/ZnAzFqnfGh55BG3o5qNlIDZCCb9/6ufwymSfWYo6egoIIDhzCCA4MwggLsoAMCAQICAQAwDQYJKoZIhvcNAQEFBQAwgY4xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLUGF5UGFsIEluYy4xEzARBgNVBAsUCmxpdmVfY2VydHMxETAPBgNVBAMUCGxpdmVfYXBpMRwwGgYJKoZIhvcNAQkBFg1yZUBwYXlwYWwuY29tMB4XDTA0MDIxMzEwMTMxNVoXDTM1MDIxMzEwMTMxNVowgY4xCzAJBgNVBAYTAlVTMQswCQYDVQQIEwJDQTEWMBQGA1UEBxMNTW91bnRhaW4gVmlldzEUMBIGA1UEChMLUGF5UGFsIEluYy4xEzARBgNVBAsUCmxpdmVfY2VydHMxETAPBgNVBAMUCGxpdmVfYXBpMRwwGgYJKoZIhvcNAQkBFg1yZUBwYXlwYWwuY29tMIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDBR07d/ETMS1ycjtkpkvjXZe9k+6CieLuLsPumsJ7QC1odNz3sJiCbs2wC0nLE0uLGaEtXynIgRqIddYCHx88pb5HTXv4SZeuv0Rqq4+axW9PLAAATU8w04qqjaSXgbGLP3NmohqM6bV9kZZwZLR/klDaQGo1u9uDb9lr4Yn+rBQIDAQABo4HuMIHrMB0GA1UdDgQWBBSWn3y7xm8XvVk/UtcKG+wQ1mSUazCBuwYDVR0jBIGzMIGwgBSWn3y7xm8XvVk/UtcKG+wQ1mSUa6GBlKSBkTCBjjELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNBMRYwFAYDVQQHEw1Nb3VudGFpbiBWaWV3MRQwEgYDVQQKEwtQYXlQYWwgSW5jLjETMBEGA1UECxQKbGl2ZV9jZXJ0czERMA8GA1UEAxQIbGl2ZV9hcGkxHDAaBgkqhkiG9w0BCQEWDXJlQHBheXBhbC5jb22CAQAwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQUFAAOBgQCBXzpWmoBa5e9fo6ujionW1hUhPkOBakTr3YCDjbYfvJEiv/2P+IobhOGJr85+XHhN0v4gUkEDI8r2/rNk1m0GA8HKddvTjyGw/XqXa+LSTlDYkqI8OwR8GEYj4efEtcRpRYBxV8KxAW93YDWzFGvruKnnLbDAF6VR5w/cCMn5hzGCAZowggGWAgEBMIGUMIGOMQswCQYDVQQGEwJVUzELMAkGA1UECBMCQ0ExFjAUBgNVBAcTDU1vdW50YWluIFZpZXcxFDASBgNVBAoTC1BheVBhbCBJbmMuMRMwEQYDVQQLFApsaXZlX2NlcnRzMREwDwYDVQQDFAhsaXZlX2FwaTEcMBoGCSqGSIb3DQEJARYNcmVAcGF5cGFsLmNvbQIBADAJBgUrDgMCGgUAoF0wGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMTYwMTE3MjIwMTIyWjAjBgkqhkiG9w0BCQQxFgQUO/7HLl/VAPNyiJQdeuUvgKc/4uYwDQYJKoZIhvcNAQEBBQAEgYCeQWXaq/r/WT7J+e3QUP+IJO8Q7dwvHgk2uLQlrGCL7LuaN7KKmN423AjTAZ1dZtetU5+h8Lkmjn/9TrHYFIJhLhbpwfIUxAf5uNn3YJQNNQ2VsWZP6LLFKZ+NNTkL0dfYXeAl1PPI2r4qOxArWwwqPoU8FbuuPg74qI8w68zoAA==-----END PKCS7-----
+">
+                <input id="mySubmit" type="submit" value="Go" class="hidden"/>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<div class="player-refactor">
+    <div class="col-lg-6">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Username">
+
+            <div class="input-group-btn">
+                <div class="form-group text-left">
+                    <select style="width: 80px; padding-left: 3px;" class="form-control text-left" placeholder="Region"
+                            name="region">
+                        <option value="na">NA</option>
+                        <option value="euw">EUW</option>
+                        <option value="eune">EUNE</option>
+                        <option value="br">BR</option>
+                        <option value="tr">TR</option>
+                        <option value="ru">RU</option>
+                        <option value="lan">LAN</option>
+                        <option value="las">LAS</option>
+                        <option value="oce">OCE</option>
+                        <option value="kr">KR</option>
+                    </select>
+                </div>
+                <button style="top: -15px; background-color: #2EB8E6;
+    color: white;" class="btn btn-default search" type="button" ng-click="search()">Search
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="alert alert-danger" role="alert">
+    Active game not found. Check name and region.
+</div>
+
+<div class="box arrow-left-center voice-assist-settings">
+    <div class="content">
+        <input class="voice-assist-volume" type="range" value="85"/>
+    </div>
+    <div class="input-group timer-reminder">
+        <span class="input-group-addon" id="basic-addon1">Reminder</span>
+        <input type="text" class="form-control voice-assist-reminder" placeholder=":30" aria-describedby="basic-addon1"
+               data-reminder="30">
+    </div>
+    <div class="alert-danger alert-reminder" role="alert">
+        Invalid Timer
+    </div>
+</div>
+
+<div class="box arrow-left-center language-settings">
+    <span>Global language support coming soon!</span>
+</div>
+
+<div class="box arrow-left-center cs-ticker-settings">
+    <div class="content">
+        <input class="cs-ticker-volume" type="range" value="85"/>
+
+        <div class="input-wrap">
+            <i class="fa fa-angle-double-left double-angle"></i>
+            <input type="text" READONLY class="form-control cs-ticker-input" value="5s"
+                   aria-describedby="basic-addon1"/>
+            <i class="fa fa-angle-double-right double-angle"></i>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade voice-commands" id="voice-command-list" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content voice-content">
+            <div class="modal-header tutorial-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Voice Commands</h4>
+            </div>
+            <div class="modal-body voice-body">
+                <h4>Champions</h4>
+
+                <p><i class="glyphicon glyphicon-comment"></i> "Time (champion) (summoner spell)" <i
+                            class="fa fa-volume-down command-tip"></i><span
+                            style="display: none;">Time Karma Flash</span></p>
+
+                <p><i class="glyphicon glyphicon-comment"></i> "Distortion (champion)" <i
+                            class="fa fa-volume-down command-tip"></i><span
+                            style="display: none;">Distortion Alistar</span></p>
+
+                <p><i class="glyphicon glyphicon-comment"></i> "Lucidity (champion)" <i
+                            class="fa fa-volume-down command-tip"></i><span style="display: none;">Lucidity Lux</span>
+                </p>
+
+                <p>If for whatever reason you're having trouble timing a champion, try replacing the <strong>champion
+                        name</strong> with the corresponding <strong class="strong-green-sn">summoner number(<i
+                                class="fa fa-question-circle"></i>)</strong>.</p>
+
+                <p><strong>Ex.</strong> "Time Shen Teleport" becomes "Time <strong class="strong-green">four</strong>
+                    Teleport"</p>
+
+                <h4>Jungle Monsters</h4>
+
+                <p><i class="glyphicon glyphicon-comment"></i> "Time [<strong>dragon</strong>, <strong>baron</strong>,
+                    or <strong>rift herald</strong>]" <i class="fa fa-volume-down command-tip"></i><span
+                            style="display: none;">Time Baron</span></p>
+
+                <p><i class="glyphicon glyphicon-comment"></i> "Time [<strong>top</strong> or <strong>bot</strong>]
+                    scuttle" <i class="fa fa-volume-down command-tip"></i><span
+                            style="display: none;">Time top scuttle</span></p>
+
+                <p><i class="glyphicon glyphicon-comment"></i> "Time [<strong>enemy</strong> or <strong>ally</strong>] [<strong>blue</strong>,
+                    <strong>red</strong>, <strong>gromp</strong>, <strong>wolves</strong>, <strong>raptors</strong>, or
+                    <strong>krugs</strong>]" <i class="fa fa-volume-down command-tip"></i><span style="display: none;">Time enemy raptors</span>
+                </p>
+
+                <h4>Inhibitors</h4>
+
+                <p><i class="glyphicon glyphicon-comment"></i> "Time (<strong class="strong-green">lane</strong>)
+                    [<strong>enemy</strong> or <strong>ally</strong>] inhibitor" <i
+                            class="fa fa-volume-down command-tip"></i><span style="display: none;">Time mid enemy inhibitor</span>
+                </p>
+
+                <p><i class="glyphicon glyphicon-comment"></i> "Time [<strong>enemy</strong> or <strong>ally</strong>] (<strong
+                            class="strong-green">lane</strong>) inhibitor" <i class="fa fa-volume-down command-tip"></i><span
+                            style="display: none;">Time bot blue inhibitor</span></p>
+
+                <h4>Lanes</h4>
+
+                <p>Any voice command that requires a lane can be called using the following:</p>
+                <li>"Top"</li>
+                <li>"Mid" or "Middle"</li>
+                <li>"Bot" or "Bottom"</li>
+
+                <h4>Extras</h4>
+
+                <p>You can toggle any of the extras with:</p>
+
+                <p><i class="glyphicon glyphicon-comment"></i> "Toggle [<strong>allies</strong>, <strong>ticker</strong>,
+                    <strong>display</strong>, or <strong>cannon</strong>]" <i class="fa fa-volume-down command-tip"></i><span
+                            style="display: none;">Toggle display</span></p>
+
+                <p>You can also set the the intervals for the ticker and the reminder with:</p>
+
+                <p><i class="glyphicon glyphicon-comment"></i> "Ticker set (<strong class="strong-green">1 - 10</strong>)
+                    seconds" <i class="fa fa-volume-down command-tip"></i><span style="display: none;">Ticker set 4 seconds</span>
+                </p>
+
+                <p><i class="glyphicon glyphicon-comment"></i> "Reminder set (<strong class="strong-green">time in
+                        seconds</strong>) seconds" <i class="fa fa-volume-down command-tip"></i><span
+                            style="display: none;">Reminder set 120 seconds</span></p>
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+
+<h2 style="display:none;" id="uidEnemy"><%= JSON.stringify(enemyTeam) %></h2>
+
+<h2 style="display:none;" id="uidAlly"><%= JSON.stringify(allyTeam) %></h2>
+
+<h2 style="display:none;" id="uid_masStatic"><%= JSON.stringify(masteries) %></h2>
+
+<div class="middle-container" data-ng-controller="middleController">
+
+    <div class="tut-2" style="display: none;">
+
+        <div class="tut-badge badge-2">
+            <i class="fa fa-clock-o"></i>
+        </div>
+
+        <div class="panel panel-default box-top arrow-left-top tutorial-notification" id="content-2">
+            <div class="panel-heading">
+                <h3 class="panel-title"><strong>On Display</strong></h3>
+            </div>
+            <div class="panel-body">
+                <p>This is the <strong>player dashboard</strong>.</p>
+
+                <p>The dashboard works behind the scenes to pair your voice commands with the champion displays seen
+                    below. Here, you can manually trigger timers by clicking on the icons, quickly check
+                    <strong>runes</strong> or <strong>masteries</strong>, or rearrange the player order to your liking.
+                </p>
+
+                <p>Below the player banners, you can interact with any of the gadgets you have selected.</p>
+            </div>
+            <div class="panel-footer tutorial-footer">
+                <span>Seen this before? <a class="tip-skip">Skip the tips</a></span>
+                <button type="button" class="btn btn-primary next tut-close" style="float: right;">Got It!</button>
+            </div>
+        </div>
+
+    </div>
+
+    <ul id="enemySort">
+        <% for(var i = 0; i < enemyTeam.length; i++){ %>
+
+        <li class="player-sector enemy">
+            <span class="player-sector-summoner-enemy">Summoner <%- i + 1 %></span>
+            <img class="player-sector-champ-icon"
+                 src="../images/champion/<%- parseInt(enemyTeam[i]['championId']) %>.png">
+            <% if(i == 0){ %>
+            <div class="tut-5" style="width: 0; height: 0; display: none;">
+
+                <div class="tut-badge badge-3">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+
+                <div class="panel panel-default box-top arrow-top-center tutorial-notification" id="content-5">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Aliases</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>If you ever run into any trouble with the phonetics any of the champion names, summoner
+                            numbers, or just want to put your own twist on the dashboard commands, you can!</p>
+
+                        <p>All you have to do is press the champion icon of the name you wish to make a custom alias
+                            for, wait for the icon to pulse red, and say your catch-phrase. Any aliases you make will be
+                            stored on your personal dashboard, so you'll always have them saved for future uses!</p>
+
+                        <p>To clear any aliases you have made, click on the champion portrait, wait for the cue to
+                            record, and say <strong class="strong-red">"clear"</strong>.</p>
+                    </div>
+                    <div class="panel-footer tutorial-footer">
+                        <span>Seen this before? <a class="tip-skip">Skip the tips</a></span>
+                        <button type="button" class="btn btn-primary next tut-close" style="float: right;">Got It!
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+            <% } %>
+            <span class="player-sector-name"><%- enemyTeam[i]['summonerName'] %></span>
+
+            <div class="action <%- enemyTeam[i]['spell1Id'] %>-<%- enemyTeam[i]['championId'] %> player-sector-ss1"
+                 onclick="startTimer('<%- enemyTeam[i]['spell1Id'] %>', '<%- enemyTeam[i]['championId'] %>')"
+                 id="<%- enemyTeam[i]['spell1Id'] %>">
+                <div class="action-internal">
+                    <div class="contents">
+                        <img class="player-sector-ss1 summoner-spell"
+                             src="../images/ss/<%- enemyTeam[i]['spell1Id'] %>.png"
+                             id="<%- enemyTeam[i]['spell1Id'] %>">
+                    </div>
+                    <canvas class="status"></canvas>
+                </div>
+            </div>
+            <div class="action <%- enemyTeam[i]['spell2Id'] %>-<%- enemyTeam[i]['championId'] %> player-sector-ss2"
+                 onclick="startTimer('<%- enemyTeam[i]['spell2Id'] %>', '<%- enemyTeam[i]['championId'] %>')"
+                 id="<%- enemyTeam[i]['spell2Id'] %>">
+                <div class="action-internal">
+                    <div class="contents">
+                        <img class="player-sector-ss2 summoner-spell"
+                             src="../images/ss/<%- enemyTeam[i]['spell2Id'] %>.png"
+                             id="<%- enemyTeam[i]['spell2Id'] %>">
+                    </div>
+                    <canvas class="status"></canvas>
+                </div>
+            </div>
+            <div onclick="toggleDistortionInit(this)" data-distortion="false" data-insight="false"
+                 data-champid="<%- enemyTeam[i]['championId'] %>"
+                 class="player-sector-distortion distortion-<%- enemyTeam[i]['championId'] %> distortion-id-<%- i + 1 %>">
+                <img class="player-sector-distortion-boot" src="../images/ss/boots.png">
+                <img class="player-sector-distortion-enchant" src="../images/ss/distortion.png">
+                <% if(i == 0){ %>
+                <div class="tut-3" style="width: 0; height: 0; display: none;">
+
+                    <div class="tut-badge badge-3">
+                        <i class="fa fa-clock-o"></i>
+                    </div>
+
+                    <div class="panel panel-default box-top arrow-top-center tutorial-notification" id="content-3">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><strong>Distortion</strong></h3>
+                        </div>
+                        <div class="panel-body">
+                            <p>The player dashboard can track whether or not a player has the distortion boot
+                                enchantment or boots of lucidity. If you see that a player has the distortion
+                                enchantment, make sure to click the brown boot on their player banner
+                                <strong>or</strong> say the command, "Distortion (champion name)". If you see that a
+                                player has purchased boots of lucidity, make sure to click the blue boot on their player
+                                banner <strong>or</strong> say the command, "Lucidity (champion name)". </p>
+
+                            <p>If at any time a player sells their boots or switches enchantments, click the icon or say
+                                the voice command again to toggle it off. </p>
+                        </div>
+                        <div class="panel-footer tutorial-footer">
+                            <span>Seen this before? <a class="tip-skip">Skip the tips</a></span>
+                            <button type="button" class="btn btn-primary next tut-close" style="float: right;">Got It!
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <% } %>
+            </div>
+
+            <div onclick="toggleLucidityInit(this)" data-lucidity="false"
+                 data-champid="<%- enemyTeam[i]['championId'] %>"
+                 class="player-sector-lucidity lucidity-<%- enemyTeam[i]['championId'] %> lucidity-id-<%- i + 1 %>">
+                <img class="player-sector-lucidity-boot" src="../images/ss/lucidity.png">
+            </div>
+
+            <div class="runes">
+                <span>Runes</span>
+                <ul class="dropdown-menu" id="<%- 'page-' + i + 1 %>">
+
+                    <% var regContainer = /\(([^)]+)\)/ %>
+                    <% function hasContainer(input){ %>
+                    <% return (input.match(regContainer)) %>
+                    <% } %>
+
+                    <% function runePowerRaw(rune){ %>
+                    <% if(rune.indexOf('+') != -1 || rune.indexOf('-') != -1){ %>
+                    <% rune = rune.replace(/\-/g, '') %>
+                    <% return parseFloat(rune) * parseFloat(runeCount) %>
+                    <% } else return false; %>
+                    <% } %>
+
+                    <% function runePowerBase(rune){ %>
+                    <% if(rune.indexOf('+') != -1 || rune.indexOf('-') != -1){ %>
+                    <% rune = rune.replace(/\-/g, '') %>
+                    <% return parseFloat(rune) %>
+                    <% } else return false; %>
+                    <% } %>
+
+                    <% var runeList = [] %>
+
+                    <% for(var ii = 0; ii < enemyTeam[i]['runeIds'].length; ii++){ %>
+
+                    <% var runeIntPowerList = {} %>
+                    <% var runeId = enemyTeam[i]['runeIds'][ii]['runeId'] %>
+                    <% var runeCount = enemyTeam[i]['runeIds'][ii]['count'] %>
+                    <% var runeDescSplit = runes[runeId]['description'].split(' / ') %>
+                    <% var firstRuneInt = '' %>
+                    <% var newRuneDescFinal = '' %>
+                    <% var runeDesc = runes[runeId]['description'] %>
+                    <% var runeItemInstance = runeDesc.replace(/[0-9.]/g, '') %>
+                    <% runeList.push(runeDesc) %>
+
+                    <%# add check if rune instance already exists and populate accordingly %>
+                    <% var firstRunePower = 0 %>
+                    <% var secondRunePower = 0 %>
+                    <% var scalingRuneRef = 0 %>
+                    <% for(var n = 0; n < runeList.length; n++) { %>
+                    <% var runeInt = runeList[n] %>
+                    <% var runeIntToBase = runeInt.replace(/[0-9.]/g, '') %>
+
+                    <% if(runeList.indexOf(runeDesc) != n && runeItemInstance == runeIntToBase) { %>
+                    <% var runePowerSplit = runeInt.split(' / ') %>
+                    <% firstRunePower = firstRunePower + Math.round(runePowerBase(runePowerSplit[0].split(' ').shift()) * enemyTeam[i]['runeIds'][n]['count']) %>
+                    <% if (runePowerSplit.length == 2) secondRunePower = secondRunePower + Math.round(runePowerBase(runePowerSplit[1].split(' ').shift()) * enemyTeam[i]['runeIds'][n]['count']) %>
+                    <% if (hasContainer(runeDesc)){ %>
+                    <% var ec = runeDesc.match(regContainer)[1] %>
+                    <% scalingRuneRef = scalingRuneRef + Math.round(runePowerBase(ec.split(' ').shift()) * enemyTeam[i]['runeIds'][n]['count']) %>
+                    <% } %>
+                    <% } %>
+                    <% } %>
+
+                    <% runeIntPowerList[ii.toString()] = ({
+                        firstInt: firstRunePower,
+                        secondInt: secondRunePower,
+                        thirdInt: scalingRuneRef
+                    }) %>
+
+                    <% if(runeDescSplit.length == 1) { %>
+                    <% firstRuneInt = runeDescSplit[0].split(' ').shift() %>
+                    <% newRuneDescFinal = runeDesc.replace(runePowerBase(firstRuneInt), (Math.round(runePowerRaw(firstRuneInt) * 100) / 100) + runeIntPowerList[ii.toString()]['firstInt']) %>
+                    <% } else { %>
+                    <% firstRuneInt = runeDescSplit[0].split(' ').shift() %>
+                    <% var secondRuneInt = runeDescSplit[1].split(' ').shift() %>
+                    <% var newRuneDesc = runeDesc.replace(runePowerBase(firstRuneInt), (Math.round(runePowerRaw(firstRuneInt) * 100) / 100) + runeIntPowerList[ii.toString()]['firstInt']) %>
+                    <% newRuneDescFinal = newRuneDesc.replace(runePowerBase(secondRuneInt), (Math.round(runePowerRaw(secondRuneInt) * 100) / 100) + runeIntPowerList[ii.toString()]['secondInt']) %>
+                    <% } %>
+
+                    <% if(hasContainer(newRuneDescFinal)) { %>
+                    <% var extraContainer = newRuneDescFinal.match(regContainer)[1] %>
+                    <% var extConRune = extraContainer.split(' ').shift() %>
+                    <% newRuneDescFinal = newRuneDescFinal.replace(runePowerBase(extConRune), (Math.round(runePowerRaw(extConRune) * 100) / 100) + runeIntPowerList[ii.toString()]['thirdInt']) %>
+                    <% } %>
+
+                    <% var id = newRuneDescFinal.replace(/[0-9.]/g, '') %>
+                    <li><a class="rune-list" id="<%- id %>"><%- newRuneDescFinal %></a></li>
+                    <% } %>
+                </ul>
+            </div>
+
+            <div type="button" class="btn btn-primary modbtn" data-toggle="modal" data-target="#mastery-mod-<%- i %>">
+                <span>Masteries</span></div>
+
+            <div class="masteries-<%- i %>">
+                <div id="mastery-mod-<%- i %>" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="talent-tree"
+                                         style="background-image: url(../images/masteries/ferocity-background.jpg);">
+
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 405px;">
+                                            <div class="tooltip">
+                                                <h2>Fury</h2>
+
+                                                <div class="item-description">+0.8% Attack Speed</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: 0px -49px;"></div>
+                                            </div>
+                                            <span id="6111" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 405px;">
+                                            <div class="tooltip">
+                                                <h2>Sorcery</h2>
+
+                                                <div class="item-description">+0.4% Increased Ability Damage</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -49px -49px;"></div>
+                                            </div>
+                                            <span id="6114" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 76px; bottom: 327px;">
+                                            <div class="tooltip">
+                                                <h2>Double Edged Sword</h2>
+
+                                                <div class="item-description">Melee: Deal 3% additional damage, take
+                                                    1.5% additional damage. Ranged: Deal and take 2% additional damage
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -98px -49px;"></div>
+                                            </div>
+                                            <span id="6121" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 138px; bottom: 327px;">
+                                            <div class="tooltip">
+                                                <h2>Feast</h2>
+
+                                                <div class="item-description">Killing a unit restores 20 Health (20
+                                                    second cooldown)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -147px -49px;"></div>
+                                            </div>
+                                            <span id="6122" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 249px;">
+                                            <div class="tooltip">
+                                                <h2>Vampirism</h2>
+
+                                                <div class="item-description">+0.4% Lifesteal and Spell Vamp</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -196px -49px;"></div>
+                                            </div>
+                                            <span id="6131" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 249px;">
+                                            <div class="tooltip">
+                                                <h2>Natural Talent</h2>
+
+                                                <div class="item-description">+2 Attack Damage and 3 Ability Power at
+                                                    level 18 (0.11 Attack Damage and 0.16 Ability Power per level)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -245px -49px;"></div>
+                                            </div>
+                                            <span id="6134" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 76px; bottom: 171px;">
+                                            <div class="tooltip">
+                                                <h2>Bounty Hunter</h2>
+
+                                                <div class="item-description">Deal 1% increased damage for each unique
+                                                    enemy champion you have killed
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -294px -49px;"></div>
+                                            </div>
+                                            <span id="6141" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 138px; bottom: 171px;">
+                                            <div class="tooltip">
+                                                <h2>Oppressor</h2>
+
+                                                <div class="item-description">Deal 2.5% increased damage to targets with
+                                                    impaired movement (slow, stun, root, taunt, etc.)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -343px -49px;"></div>
+                                            </div>
+                                            <span id="6142" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 93px;">
+                                            <div class="tooltip">
+                                                <h2>Battering Blows</h2>
+
+                                                <div class="item-description">+1.4% Armor Penetration</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -392px -49px;"></div>
+                                            </div>
+                                            <span id="6151" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 93px;">
+                                            <div class="tooltip">
+                                                <h2>Piercing Thoughts</h2>
+
+                                                <div class="item-description">+1.4% Magic Penetration</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -441px -49px;"></div>
+                                            </div>
+                                            <span id="6154" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Warlord's Bloodlust</h2>
+
+                                                <div class="item-description">Your critical strikes on enemy champions
+                                                    heal you for 15% of the damage dealt and grant you 20% attack speed
+                                                    for 4 seconds (2 second cooldown)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -490px -49px;"></div>
+                                            </div>
+                                            <span id="6161" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip "
+                                             style="position: absolute; left: 107px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Fervor of Battle</h2>
+
+                                                <div class="item-description">Your attacks and spells grant stacks of
+                                                    Fervor for 5 seconds (max 10 stacks). Each stack adds 1-8 bonus
+                                                    physical damage to basic attacks against champions (based on your
+                                                    level)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -539px -49px;"></div>
+                                            </div>
+                                            <span id="6162" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip "
+                                             style="position: absolute; left: 169px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Deathfire Touch</h2>
+
+                                                <div class="item-description">Your damaging abilities cause enemy
+                                                    champions to take magic damage equal to 6 + 50% of your Bonus Attack
+                                                    Damage and 20% of your Ability Power, over 3 seconds <br><br>Area of
+                                                    effect and damage over time abilities apply half of this damage over
+                                                    1.5 seconds instead
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -588px -49px;"></div>
+                                            </div>
+                                            <span id="6164" class="points" style="display: block;">0/1</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="talent-tree"
+                                         style="background-image: url(../images/masteries/cunning-background.jpg);">
+
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 405px;">
+                                            <div class="tooltip">
+                                                <h2>Wanderer</h2>
+
+                                                <div class="item-description">+0.6% Movement Speed out of combat</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: 0px -49px;"></div>
+                                            </div>
+                                            <span id="6311" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 405px;">
+                                            <div class="tooltip">
+                                                <h2>Savagery</h2>
+
+                                                <div class="item-description">Single target attacks and spells deal 1
+                                                    bonus damage to minions and monsters
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -49px -49px;"></div>
+                                            </div>
+                                            <span id="6312" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 327px;">
+                                            <div class="tooltip">
+                                                <h2>Runic Affinity</h2>
+
+                                                <div class="item-description">Buffs from neutral monsters last 15%
+                                                    longer
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -98px -49px;"></div>
+                                            </div>
+                                            <span id="6321" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 107px; bottom: 327px;">
+                                            <div class="tooltip">
+                                                <h2>Secret Stash</h2>
+
+                                                <div class="item-description">Your Potions and Elixirs last 10%
+                                                    longer.<br><br>Your Health Potions are replaced with Biscuits that
+                                                    restore 20 Health and 10 Mana instantly on use
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -147px -49px;"></div>
+                                            </div>
+                                            <span id="6322" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 327px;">
+                                            <div class="tooltip">
+                                                <h2>Assassin</h2>
+
+                                                <div class="item-description">Deal 1.5% increased damage when no allied
+                                                    champions are nearby
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -637px -49px;"></div>
+                                            </div>
+                                            <span id="6323" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 249px;">
+                                            <div class="tooltip">
+                                                <h2>Merciless</h2>
+
+                                                <div class="item-description">Deal 1% increased damage to champions
+                                                    below 40% Health
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -196px -49px;"></div>
+                                            </div>
+                                            <span id="6331" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 249px;">
+                                            <div class="tooltip">
+                                                <h2>Meditation</h2>
+
+                                                <div class="item-description">Regenerate 0.3% of your missing Mana every
+                                                    5 seconds
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -245px -49px;"></div>
+                                            </div>
+                                            <span id="6332" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 76px; bottom: 171px;">
+                                            <div class="tooltip">
+                                                <h2>Bandit</h2>
+
+                                                <div class="item-description">Gain 1 gold for each nearby minion killed
+                                                    by an ally. <br><br>Gain 3 gold (10 if melee) when hitting an enemy
+                                                    champion with a basic attack (5 second cooldown)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -294px -49px;"></div>
+                                            </div>
+                                            <span id="6342" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 138px; bottom: 171px;">
+                                            <div class="tooltip">
+                                                <h2>Dangerous Game</h2>
+
+                                                <div class="item-description">Champion kills and assists restore 5% of
+                                                    your missing Health and Mana
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -343px -49px;"></div>
+                                            </div>
+                                            <span id="6343" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 93px;">
+                                            <div class="tooltip">
+                                                <h2>Precision</h2>
+
+                                                <div class="item-description">Gain 0.6 + 0.06 per level Armor and Magic
+                                                    Penetration
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -392px -49px;"></div>
+                                            </div>
+                                            <span id="6351" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 93px;">
+                                            <div class="tooltip">
+                                                <h2>Intelligence</h2>
+
+                                                <div class="item-description">Your Cooldown Reduction cap is increased
+                                                    to 41% and you gain 1% Cooldown Reduction
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -441px -49px;"></div>
+                                            </div>
+                                            <span id="6352" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Stormraider's Surge</h2>
+
+                                                <div class="item-description">Dealing 30% of a champion's max Health
+                                                    within 2 seconds grants you 35% Movement Speed for 3 seconds (10
+                                                    second cooldown).
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -490px -49px;"></div>
+                                            </div>
+                                            <span id="6361" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 107px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Thunderlord's Decree</h2>
+
+                                                <div class="item-description">Your 3rd attack or spell on an enemy
+                                                    champion calls down a lightning strike, dealing magic damage in the
+                                                    area. <br><br>Damage: 10 per level, plus 20% of your Bonus Attack
+                                                    Damage, and 10% of your Ability Power (20 second cooldown).
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -539px -49px;"></div>
+                                            </div>
+                                            <span id="6362" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Windspeaker's Blessing</h2>
+
+                                                <div class="item-description">Your heals and shields are 10% stronger.
+                                                    Additionally, your shields and heals on other allies increase their
+                                                    resistances by 15% for 3 seconds.
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -588px -49px;"></div>
+                                            </div>
+                                            <span id="6363" class="points" style="display: block;">0/1</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="talent-tree"
+                                         style="background-image: url(../images/masteries/resolve-background.jpg);">
+
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 405px;">
+                                            <div class="tooltip">
+                                                <h2>Recovery</h2>
+
+                                                <div class="item-description">+0.4 Health per 5 seconds</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: 0px -49px;"></div>
+                                            </div>
+                                            <span id="6211" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 405px;">
+                                            <div class="tooltip">
+                                                <h2>Unyielding</h2>
+
+                                                <div class="item-description">+1.2% Bonus Armor and Magic Resist</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -49px -49px;"></div>
+                                            </div>
+                                            <span id="6212" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 76px; bottom: 327px;">
+                                            <div class="tooltip">
+                                                <h2>Explorer</h2>
+
+                                                <div class="item-description">+12 Movement Speed in Brush and River
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -98px -49px;"></div>
+                                            </div>
+                                            <span id="6221" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 138px; bottom: 327px;">
+                                            <div class="tooltip">
+                                                <h2>Tough Skin</h2>
+
+                                                <div class="item-description">You take 2 less damage from champion and
+                                                    neutral monster basic attacks
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -147px -49px;"></div>
+                                            </div>
+                                            <span id="6223" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 249px;">
+                                            <div class="tooltip">
+                                                <h2>Runic Armor</h2>
+
+                                                <div class="item-description">Shields, healing, regeneration, and
+                                                    lifesteal on you are 1.6% stronger
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -196px -49px;"></div>
+                                            </div>
+                                            <span id="6231" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 249px;">
+                                            <div class="tooltip">
+                                                <h2>Veteran's Scars</h2>
+
+                                                <div class="item-description">+0.8% Total Health</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -245px -49px;"></div>
+                                            </div>
+                                            <span id="6232" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 76px; bottom: 171px;">
+                                            <div class="tooltip">
+                                                <h2>Insight</h2>
+
+                                                <div class="item-description">Reduces the cooldown of Summoner Spells by
+                                                    15%
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -294px -49px;"></div>
+                                            </div>
+                                            <span id="6241" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 138px; bottom: 171px;">
+                                            <div class="tooltip">
+                                                <h2>Perseverance</h2>
+
+                                                <div class="item-description">+50% Base Health Regen, increased to +200%
+                                                    when below 25% Health
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -343px -49px;"></div>
+                                            </div>
+                                            <span id="6242" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 93px;">
+                                            <div class="tooltip">
+                                                <h2>Swiftness</h2>
+
+                                                <div class="item-description">+3% Tenacity and Slow Resist</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -392px -49px;"></div>
+                                            </div>
+                                            <span id="6251" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 93px;">
+                                            <div class="tooltip">
+                                                <h2>Legendary Guardian</h2>
+
+                                                <div class="item-description">+0.6 Armor and Magic Resist for each
+                                                    nearby enemy champion
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -441px -49px;"></div>
+                                            </div>
+                                            <span id="6252" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Grasp of the Undying</h2>
+
+                                                <div class="item-description">Every 4 seconds in combat your next attack
+                                                    against an enemy champion steals life equal to 3% of your max Health
+                                                    (halved for ranged champions, deals magic damage)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -490px -49px;"></div>
+                                            </div>
+                                            <span id="6261" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 107px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Strength of the Ages</h2>
+
+                                                <div class="item-description">Siege minions and large monsters that you
+                                                    or nearby allied champions kill grant 20 and 10 permanent Health,
+                                                    respectively (300 max). After reaching the max bonus, siege minion
+                                                    kills restore 100 Health
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -539px -49px;"></div>
+                                            </div>
+                                            <span id="6262" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Bond of Stone</h2>
+
+                                                <div class="item-description">+2% Damage Reduction. While near an allied
+                                                    champion, this bonus is quadrupled and 8% of the damage they would
+                                                    take from champions is dealt to you instead (cannot reduce you below
+                                                    15% Health)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -588px -49px;"></div>
+                                            </div>
+                                            <span id="6263" class="points" style="display: block;">0/1</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <span class="glyphicon glyphicon-menu-hamburger hamburger handledrag" aria-hidden="true"></span>
+        </li>
+
+        <% } %>
+    </ul>
+    <div class="divider"></div>
+    <ul id="allySort">
+        <% for(var z = 0; z < allyTeam.length; z++){ %>
+
+        <li class="player-sector ally">
+            <span class="player-sector-summoner-ally">Summoner <%- z + 6 %></span>
+            <img class="player-sector-champ-icon"
+                 src="../images/champion/<%- parseInt(allyTeam[z]['championId']) %>.png">
+            <span class="player-sector-name"><%- allyTeam[z]['summonerName'] %></span>
+
+            <div class="action <%- allyTeam[z]['spell1Id'] %>-<%- allyTeam[z]['championId'] %> player-sector-ss1"
+                 onclick="startTimer('<%- allyTeam[z]['spell1Id'] %>', '<%- allyTeam[z]['championId'] %>')"
+                 id="<%- allyTeam[z]['spell1Id'] %>">
+                <div class="action-internal">
+                    <div class="contents">
+                        <img class="player-sector-ss1 summoner-spell"
+                             src="../images/ss/<%- allyTeam[z]['spell1Id'] %>.png" id="<%- allyTeam[z]['spell1Id'] %>">
+                    </div>
+                    <canvas class="status"></canvas>
+                </div>
+            </div>
+            <div class="action <%- allyTeam[z]['spell2Id'] %>-<%- allyTeam[z]['championId'] %> player-sector-ss2"
+                 onclick="startTimer('<%- allyTeam[z]['spell2Id'] %>', '<%- allyTeam[z]['championId'] %>')"
+                 id="<%- allyTeam[z]['spell2Id'] %>">
+                <div class="action-internal">
+                    <div class="contents">
+                        <img class="player-sector-ss1 summoner-spell"
+                             src="../images/ss/<%- allyTeam[z]['spell2Id'] %>.png" id="<%- allyTeam[z]['spell1Id'] %>">
+                    </div>
+                    <canvas class="status"></canvas>
+                </div>
+            </div>
+            <div onclick="toggleDistortionInit(this)" data-distortion="false" data-insight="false"
+                 data-champid="<%- allyTeam[z]['championId'] %>"
+                 class="player-sector-distortion distortion-<%- allyTeam[z]['championId'] %> distortion-id-<%- z + 6 %>">
+                <img class="player-sector-distortion-boot" src="../images/ss/boots.png">
+                <img class="player-sector-distortion-enchant" src="../images/ss/distortion.png">
+            </div>
+            <div onclick="toggleLucidityInit(this)" data-lucidity="false"
+                 data-champid="<%- allyTeam[z]['championId'] %>"
+                 class="player-sector-lucidity lucidity-<%- allyTeam[z]['championId'] %> lucidity-id-<%- z + 6 %>">
+                <img class="player-sector-lucidity-boot" src="../images/ss/lucidity.png">
+            </div>
+
+            <div class="runes">
+                <span>Runes</span>
+                <ul class="dropdown-menu" id="<%- 'page-' + z + 1 %>">
+
+                    <% var regContainer = /\(([^)]+)\)/ %>
+                    <% function hasContainer(input){ %>
+                    <% return (input.match(regContainer)) %>
+                    <% } %>
+
+                    <% function runePowerRaw(rune){ %>
+                    <% if(rune.indexOf('+') != -1 || rune.indexOf('-') != -1){ %>
+                    <% rune = rune.replace(/\-/g, '') %>
+                    <% return parseFloat(rune) * parseFloat(runeCount) %>
+                    <% } else return false; %>
+                    <% } %>
+
+                    <% function runePowerBase(rune){ %>
+                    <% if(rune.indexOf('+') != -1 || rune.indexOf('-') != -1){ %>
+                    <% rune = rune.replace(/\-/g, '') %>
+                    <% return parseFloat(rune) %>
+                    <% } else return false; %>
+                    <% } %>
+
+                    <% var runeList = [] %>
+
+                    <% for(var zz = 0; zz < allyTeam[z]['runeIds'].length; zz++){ %>
+
+                    <% var runeIntPowerList = {} %>
+                    <% var runeId = allyTeam[z]['runeIds'][zz]['runeId'] %>
+                    <% var runeCount = allyTeam[z]['runeIds'][zz]['count'] %>
+                    <% var runeDescSplit = runes[runeId]['description'].split(' / ') %>
+                    <% var firstRuneInt = '' %>
+                    <% var newRuneDescFinal = '' %>
+                    <% var runeDesc = runes[runeId]['description'] %>
+                    <% var runeItemInstance = runeDesc.replace(/[0-9.]/g, '') %>
+                    <% runeList.push(runeDesc) %>
+
+                    <%# add check if rune instance already exists and populate accordingly %>
+                    <% var firstRunePower = 0 %>
+                    <% var secondRunePower = 0 %>
+                    <% var scalingRuneRef = 0 %>
+                    <% for(var n = 0; n < runeList.length; n++) { %>
+                    <% var runeInt = runeList[n] %>
+                    <% var runeIntToBase = runeInt.replace(/[0-9.]/g, '') %>
+
+                    <% if(runeList.indexOf(runeDesc) != n && runeItemInstance == runeIntToBase) { %>
+                    <% var runePowerSplit = runeInt.split(' / ') %>
+                    <% firstRunePower = firstRunePower + Math.round(runePowerBase(runePowerSplit[0].split(' ').shift()) * allyTeam[z]['runeIds'][n]['count']) %>
+                    <% if (runePowerSplit.length == 2) secondRunePower = secondRunePower + Math.round(runePowerBase(runePowerSplit[1].split(' ').shift()) * allyTeam[z]['runeIds'][n]['count']) %>
+                    <% if (hasContainer(runeDesc)){ %>
+                    <% var ec = runeDesc.match(regContainer)[1] %>
+                    <% scalingRuneRef = scalingRuneRef + Math.round(runePowerBase(ec.split(' ').shift()) * allyTeam[z]['runeIds'][n]['count']) %>
+                    <% } %>
+                    <% } %>
+                    <% } %>
+
+                    <% runeIntPowerList[zz.toString()] = ({
+                        firstInt: firstRunePower,
+                        secondInt: secondRunePower,
+                        thirdInt: scalingRuneRef
+                    }) %>
+
+                    <% if(runeDescSplit.length == 1) { %>
+                    <% firstRuneInt = runeDescSplit[0].split(' ').shift() %>
+                    <% newRuneDescFinal = runeDesc.replace(runePowerBase(firstRuneInt), (Math.round(runePowerRaw(firstRuneInt) * 100) / 100) + runeIntPowerList[zz.toString()]['firstInt']) %>
+                    <% } else { %>
+                    <% firstRuneInt = runeDescSplit[0].split(' ').shift() %>
+                    <% var secondRuneInt = runeDescSplit[1].split(' ').shift() %>
+                    <% var newRuneDesc = runeDesc.replace(runePowerBase(firstRuneInt), (Math.round(runePowerRaw(firstRuneInt) * 100) / 100) + runeIntPowerList[zz.toString()]['firstInt']) %>
+                    <% newRuneDescFinal = newRuneDesc.replace(runePowerBase(secondRuneInt), (Math.round(runePowerRaw(secondRuneInt) * 100) / 100) + runeIntPowerList[zz.toString()]['secondInt']) %>
+                    <% } %>
+
+                    <% if(hasContainer(newRuneDescFinal)) { %>
+                    <% var extraContainer = newRuneDescFinal.match(regContainer)[1] %>
+                    <% var extConRune = extraContainer.split(' ').shift() %>
+                    <% newRuneDescFinal = newRuneDescFinal.replace(runePowerBase(extConRune), (Math.round(runePowerRaw(extConRune) * 100) / 100) + runeIntPowerList[zz.toString()]['thirdInt']) %>
+                    <% } %>
+
+                    <% var id = newRuneDescFinal.replace(/[0-9.]/g, '') %>
+                    <li><a class="rune-list" id="<%- id %>"><%- newRuneDescFinal %></a></li>
+                    <% } %>
+                </ul>
+            </div>
+
+            <div type="button" class="btn btn-primary modbtn" data-toggle="modal"
+                 data-target="#mastery-mod-<%- z + 5 %>"><span>Masteries</span></div>
+
+            <div class="masteries-<%- z + 5 %>">
+                <div id="mastery-mod-<%- z + 5 %>" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <table>
+                            <tr>
+                                <td>
+                                    <div class="talent-tree"
+                                         style="background-image: url(../images/masteries/ferocity-background.jpg);">
+
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 405px;">
+                                            <div class="tooltip">
+                                                <h2>Fury</h2>
+
+                                                <div class="item-description">+0.8% Attack Speed</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: 0px -49px;"></div>
+                                            </div>
+                                            <span id="6111" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 405px;">
+                                            <div class="tooltip">
+                                                <h2>Sorcery</h2>
+
+                                                <div class="item-description">+0.4% Increased Ability Damage</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -49px -49px;"></div>
+                                            </div>
+                                            <span id="6114" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 76px; bottom: 327px;">
+                                            <div class="tooltip">
+                                                <h2>Double Edged Sword</h2>
+
+                                                <div class="item-description">Melee: Deal 3% additional damage, take
+                                                    1.5% additional damage. Ranged: Deal and take 2% additional damage
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -98px -49px;"></div>
+                                            </div>
+                                            <span id="6121" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 138px; bottom: 327px;">
+                                            <div class="tooltip">
+                                                <h2>Feast</h2>
+
+                                                <div class="item-description">Killing a unit restores 20 Health (20
+                                                    second cooldown)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -147px -49px;"></div>
+                                            </div>
+                                            <span id="6122" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 249px;">
+                                            <div class="tooltip">
+                                                <h2>Vampirism</h2>
+
+                                                <div class="item-description">+0.4% Lifesteal and Spell Vamp</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -196px -49px;"></div>
+                                            </div>
+                                            <span id="6131" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 249px;">
+                                            <div class="tooltip">
+                                                <h2>Natural Talent</h2>
+
+                                                <div class="item-description">+2 Attack Damage and 3 Ability Power at
+                                                    level 18 (0.11 Attack Damage and 0.16 Ability Power per level)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -245px -49px;"></div>
+                                            </div>
+                                            <span id="6134" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 76px; bottom: 171px;">
+                                            <div class="tooltip">
+                                                <h2>Bounty Hunter</h2>
+
+                                                <div class="item-description">Deal 1% increased damage for each unique
+                                                    enemy champion you have killed
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -294px -49px;"></div>
+                                            </div>
+                                            <span id="6141" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 138px; bottom: 171px;">
+                                            <div class="tooltip">
+                                                <h2>Oppressor</h2>
+
+                                                <div class="item-description">Deal 2.5% increased damage to targets with
+                                                    impaired movement (slow, stun, root, taunt, etc.)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -343px -49px;"></div>
+                                            </div>
+                                            <span id="6142" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 93px;">
+                                            <div class="tooltip">
+                                                <h2>Battering Blows</h2>
+
+                                                <div class="item-description">+1.4% Armor Penetration</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -392px -49px;"></div>
+                                            </div>
+                                            <span id="6151" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 93px;">
+                                            <div class="tooltip">
+                                                <h2>Piercing Thoughts</h2>
+
+                                                <div class="item-description">+1.4% Magic Penetration</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -441px -49px;"></div>
+                                            </div>
+                                            <span id="6154" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Warlord's Bloodlust</h2>
+
+                                                <div class="item-description">Your critical strikes on enemy champions
+                                                    heal you for 15% of the damage dealt and grant you 20% attack speed
+                                                    for 4 seconds (2 second cooldown)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -490px -49px;"></div>
+                                            </div>
+                                            <span id="6161" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip "
+                                             style="position: absolute; left: 107px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Fervor of Battle</h2>
+
+                                                <div class="item-description">Your attacks and spells grant stacks of
+                                                    Fervor for 5 seconds (max 10 stacks). Each stack adds 1-8 bonus
+                                                    physical damage to basic attacks against champions (based on your
+                                                    level)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -539px -49px;"></div>
+                                            </div>
+                                            <span id="6162" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip "
+                                             style="position: absolute; left: 169px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Deathfire Touch</h2>
+
+                                                <div class="item-description">Your damaging abilities cause enemy
+                                                    champions to take magic damage equal to 6 + 50% of your Bonus Attack
+                                                    Damage and 20% of your Ability Power, over 3 seconds <br><br>Area of
+                                                    effect and damage over time abilities apply half of this damage over
+                                                    1.5 seconds instead
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/ferocity.jpg); background-position: -588px -49px;"></div>
+                                            </div>
+                                            <span id="6164" class="points" style="display: block;">0/1</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="talent-tree"
+                                         style="background-image: url(../images/masteries/cunning-background.jpg);">
+
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 405px;">
+                                            <div class="tooltip">
+                                                <h2>Wanderer</h2>
+
+                                                <div class="item-description">+0.6% Movement Speed out of combat</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: 0px -49px;"></div>
+                                            </div>
+                                            <span id="6311" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 405px;">
+                                            <div class="tooltip">
+                                                <h2>Savagery</h2>
+
+                                                <div class="item-description">Single target attacks and spells deal 1
+                                                    bonus damage to minions and monsters
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -49px -49px;"></div>
+                                            </div>
+                                            <span id="6312" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 76px; bottom: 327px;">
+                                            <div class="tooltip">
+                                                <h2>Runic Affinity</h2>
+
+                                                <div class="item-description">Buffs from neutral monsters last 15%
+                                                    longer
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -98px -49px;"></div>
+                                            </div>
+                                            <span id="6321" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 138px; bottom: 327px;">
+                                            <div class="tooltip">
+                                                <h2>Secret Stash</h2>
+
+                                                <div class="item-description">Your Potions and Elixirs last 10%
+                                                    longer.<br><br>Your Health Potions are replaced with Biscuits that
+                                                    restore 20 Health and 10 Mana instantly on use
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -147px -49px;"></div>
+                                            </div>
+                                            <span id="6322" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 249px;">
+                                            <div class="tooltip">
+                                                <h2>Merciless</h2>
+
+                                                <div class="item-description">Deal 1% increased damage to champions
+                                                    below 40% Health
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -196px -49px;"></div>
+                                            </div>
+                                            <span id="6331" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 249px;">
+                                            <div class="tooltip">
+                                                <h2>Meditation</h2>
+
+                                                <div class="item-description">Regenerate 0.3% of your missing Mana every
+                                                    5 seconds
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -245px -49px;"></div>
+                                            </div>
+                                            <span id="6332" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 76px; bottom: 171px;">
+                                            <div class="tooltip">
+                                                <h2>Bandit</h2>
+
+                                                <div class="item-description">Gain 1 gold for each nearby minion killed
+                                                    by an ally. <br><br>Gain 3 gold (10 if melee) when hitting an enemy
+                                                    champion with a basic attack (5 second cooldown)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -294px -49px;"></div>
+                                            </div>
+                                            <span id="6342" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 138px; bottom: 171px;">
+                                            <div class="tooltip">
+                                                <h2>Dangerous Game</h2>
+
+                                                <div class="item-description">Champion kills and assists restore 5% of
+                                                    your missing Health and Mana
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -343px -49px;"></div>
+                                            </div>
+                                            <span id="6343" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 93px;">
+                                            <div class="tooltip">
+                                                <h2>Precision</h2>
+
+                                                <div class="item-description">Gain 0.6 + 0.06 per level Armor and Magic
+                                                    Penetration
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -392px -49px;"></div>
+                                            </div>
+                                            <span id="6351" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 93px;">
+                                            <div class="tooltip">
+                                                <h2>Intelligence</h2>
+
+                                                <div class="item-description">Your Cooldown Reduction cap is increased
+                                                    to 41% and you gain 1% Cooldown Reduction
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -441px -49px;"></div>
+                                            </div>
+                                            <span id="6352" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Stormraider's Surge</h2>
+
+                                                <div class="item-description">Dealing 30% of a champion's max Health
+                                                    within 2 seconds grants you 35% Movement Speed for 3 seconds (10
+                                                    second cooldown).
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -490px -49px;"></div>
+                                            </div>
+                                            <span id="6361" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 107px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Thunderlord's Decree</h2>
+
+                                                <div class="item-description">Your 3rd attack or spell on an enemy
+                                                    champion calls down a lightning strike, dealing magic damage in the
+                                                    area. <br><br>Damage: 10 per level, plus 20% of your Bonus Attack
+                                                    Damage, and 10% of your Ability Power (20 second cooldown).
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -539px -49px;"></div>
+                                            </div>
+                                            <span id="6362" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Windspeaker's Blessing</h2>
+
+                                                <div class="item-description">Your heals and shields are 10% stronger.
+                                                    Additionally, your shields and heals on other allies increase their
+                                                    resistances by 15% for 3 seconds.
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/cunning.jpg); background-position: -588px -49px;"></div>
+                                            </div>
+                                            <span id="6363" class="points" style="display: block;">0/1</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="talent-tree"
+                                         style="background-image: url(../images/masteries/resolve-background.jpg);">
+
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 405px;">
+                                            <div class="tooltip">
+                                                <h2>Recovery</h2>
+
+                                                <div class="item-description">+0.4 Health per 5 seconds</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: 0px -49px;"></div>
+                                            </div>
+                                            <span id="6211" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 405px;">
+                                            <div class="tooltip">
+                                                <h2>Unyielding</h2>
+
+                                                <div class="item-description">+1.2% Bonus Armor and Magic Resist</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -49px -49px;"></div>
+                                            </div>
+                                            <span id="6212" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 76px; bottom: 327px;">
+                                            <div class="tooltip">
+                                                <h2>Explorer</h2>
+
+                                                <div class="item-description">+12 Movement Speed in Brush and River
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -98px -49px;"></div>
+                                            </div>
+                                            <span id="6221" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 138px; bottom: 327px;">
+                                            <div class="tooltip">
+                                                <h2>Tough Skin</h2>
+
+                                                <div class="item-description">You take 2 less damage from champion and
+                                                    neutral monster basic attacks
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -147px -49px;"></div>
+                                            </div>
+                                            <span id="6223" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 249px;">
+                                            <div class="tooltip">
+                                                <h2>Runic Armor</h2>
+
+                                                <div class="item-description">Shields, healing, regeneration, and
+                                                    lifesteal on you are 1.6% stronger
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -196px -49px;"></div>
+                                            </div>
+                                            <span id="6231" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 249px;">
+                                            <div class="tooltip">
+                                                <h2>Veteran's Scars</h2>
+
+                                                <div class="item-description">+0.8% Total Health</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -245px -49px;"></div>
+                                            </div>
+                                            <span id="6232" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 76px; bottom: 171px;">
+                                            <div class="tooltip">
+                                                <h2>Insight</h2>
+
+                                                <div class="item-description">Reduces the cooldown of Summoner Spells by
+                                                    15%
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -294px -49px;"></div>
+                                            </div>
+                                            <span id="6241" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 138px; bottom: 171px;">
+                                            <div class="tooltip">
+                                                <h2>Perseverance</h2>
+
+                                                <div class="item-description">+50% Base Health Regen, increased to +200%
+                                                    when below 25% Health
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -343px -49px;"></div>
+                                            </div>
+                                            <span id="6242" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 93px;">
+                                            <div class="tooltip">
+                                                <h2>Swiftness</h2>
+
+                                                <div class="item-description">+3% Tenacity and Slow Resist</div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -392px -49px;"></div>
+                                            </div>
+                                            <span id="6251" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 93px;">
+                                            <div class="tooltip">
+                                                <h2>Legendary Guardian</h2>
+
+                                                <div class="item-description">+0.6 Armor and Magic Resist for each
+                                                    nearby enemy champion
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -441px -49px;"></div>
+                                            </div>
+                                            <span id="6252" class="points" style="display: block;">0/5</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 45px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Grasp of the Undying</h2>
+
+                                                <div class="item-description">Every 4 seconds in combat your next attack
+                                                    against an enemy champion steals life equal to 3% of your max Health
+                                                    (halved for ranged champions, deals magic damage)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -490px -49px;"></div>
+                                            </div>
+                                            <span id="6261" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 107px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Strength of the Ages</h2>
+
+                                                <div class="item-description">Siege minions and large monsters that you
+                                                    or nearby allied champions kill grant 20 and 10 permanent Health,
+                                                    respectively (300 max). After reaching the max bonus, siege minion
+                                                    kills restore 100 Health
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -539px -49px;"></div>
+                                            </div>
+                                            <span id="6262" class="points" style="display: block;">0/1</span>
+                                        </div>
+
+                                        <div class="talent-icon-container tip"
+                                             style="position: absolute; left: 169px; bottom: 15px;">
+                                            <div class="tooltip">
+                                                <h2>Bond of Stone</h2>
+
+                                                <div class="item-description">+2% Damage Reduction. While near an allied
+                                                    champion, this bonus is quadrupled and 8% of the damage they would
+                                                    take from champions is dealt to you instead (cannot reduce you below
+                                                    15% Health)
+                                                </div>
+                                            </div>
+                                            <div class="icon">
+                                                <div class="sprite"
+                                                     style="background-image: url(../images/masteries/resolve.jpg); background-position: -588px -49px;"></div>
+                                            </div>
+                                            <span id="6263" class="points" style="display: block;">0/1</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <span class="glyphicon glyphicon-menu-hamburger hamburger handledrag" aria-hidden="true"></span>
+
+        </li>
+        <% } %>
+    </ul>
+    <div class="extra-container">
+
+        <div class="cw-timer">
+            <i class="fa fa-refresh cw-refresh" style="display: none;"></i>
+            <span class="cw-timer-time"><%- gameLength %></span>
+        </div>
+        <div class="map-container">
+            <img class="map" src="../images/map/summonersRift.png">
+
+            <div class="map-dot blue top-blue"></div>
+            <div class="map-dot blue mid-blue"></div>
+            <div class="map-dot blue bot-blue"></div>
+            <div class="map-dot red top-red"></div>
+            <div class="map-dot red mid-red"></div>
+            <div class="map-dot red bot-red"></div>
+            <div class="map-dot scuttle top-scuttle"></div>
+            <div class="map-dot scuttle bot-scuttle"></div>
+            <div class="map-dot monster dragon"></div>
+            <div class="map-dot monster baron"></div>
+        </div>
+        <div class="cs-ticker">
+            <span class="fa fa-pause fa-play"></span>
+        </div>
+
+    </div>
+    <div class="adv-long">
+        <!-- adv-long-dashboard -->
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:728px;height:90px"
+             data-ad-client="ca-pub-7940656770756102"
+             data-ad-slot="7835001276">
+        </ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+</div>
+
+<div id="rightWrap" class="right-container" data-ng-controller="rightController">
+
+    <div class="timer-surface">
+
+        <a class="list-group-item active header" data-ng-click="clearTimers()">Active Timers</a>
+
+        <ul class="dropdown-menu popout-menu-left timer-tip" role="menu" aria-labelledby="dropdownMenu1">
+            <li role="presentation" class="dropdown-link-left arrow-box-right">
+                <a role="menuitem" tabindex="-1" href="#">Press to Clear Timers</a>
+            </li>
+        </ul>
+
+        <div class="tse-scrollable right-wrap">
+            <div class="tse-content">
+                <ul class="timer-instance-wrapper">
+                    <li class="tmr list-group-item" data-ng-repeat="tim in timerSurface"
+                        id="{{tim.timerId}}-{{tim.champId}}" onclick="updateCont($(this));">
+                        <img class="timer-champ-icon timer-icon" ng-src="../images/champion/{{tim.champId}}.png"/>
+
+                        <div class="timer-champ-name">{{tim.champion}} <strong>{{tim.timeName}}</strong></div>
+                        <img data-ng-show="tim.timerId" class="timer-ss-icon timer-icon"
+                             ng-src="../images/ss/{{tim.timerId}}.png"/>
+                        <span class="badge">{{tim.timeDur}}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="adv-thick">
+            <!-- adv-thick -->
+            <ins class="adsbygoogle"
+                 style="display:inline-block;width:300px;height:250px"
+                 data-ad-client="ca-pub-7940656770756102"
+                 data-ad-slot="6497868876">
+            </ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+
+</div>
+
+<i class="fa fa-arrow-up mic-warning" style="display: none"></i>
+
+<div class="modal fade" id="tutorial" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content tutorial-content">
+
+            <div class="tutorial-panel active" id="1">
+                <div class="modal-header tutorial-header">
+                    <h4 class="modal-title"><strong>WELCOME TO TIMER.GG</strong></h4>
+                </div>
+                <div class="modal-body tutorial-body">
+                    <p>First things first, if you haven't already, make sure you click "allow" in the above prompt to
+                        connect your microphone to the <strong>player dashboard</strong>. Without an active microphone
+                        connection, you won't be able to issue any voice commands.</p>
+                </div>
+            </div>
+
+            <div class="tutorial-panel" id="2">
+                <div class="modal-header tutorial-header">
+                    <h4 class="modal-title"><strong>Voice Recognition</strong></h4>
+                </div>
+                <div class="modal-body tutorial-body">
+                    <p>Your <strong>player dashboard</strong> can be completely controlled by your voice, so it's
+                        important to minimize any noises that might be picked up by your microphone. Anything from a
+                        loud fan to a noisy relative can interrupt voice recognition.</p>
+
+                    <p>If for whatever reason your mic just isn't picking up, you can use the dashboard GUI to trigger
+                        everything you could from the voice commands.</p>
+                </div>
+            </div>
+
+            <div class="tutorial-panel" id="3">
+                <div class="modal-header tutorial-header">
+                    <h4 class="modal-title"><strong>Timers</strong></h4>
+                </div>
+                <div class="modal-body tutorial-body">
+                    <p>Time is the name of the game. Using just your voice, you can time everything from <strong>summoner
+                            spells</strong>, jungle monsters like <strong>baron</strong> or <strong>dragon</strong>, or
+                        even downed <strong>inhibitors</strong>.</p>
+
+                    <p>You can get a complete list of all timers and other functions by clicking the <strong
+                                class="strong-green">voice commands</strong> tab in the left configuration panel.</p>
+                </div>
+            </div>
+
+            <div class="tutorial-panel" id="4">
+                <div class="modal-header tutorial-header">
+                    <h4 class="modal-title"><strong>Reminders</strong></h4>
+                </div>
+                <div class="modal-body tutorial-body">
+                    <p>As well as providing a visual display for your timers, you'll also receive a verbal alert when a
+                        timer is about to end.</p>
+
+                    <p>In addition, you can also set another verbal reminder to trigger at any time between the start
+                        and end of your cooldown. This can be changed in the <strong class="strong-green">voice
+                            assist</strong> option menu under the <strong class="strong-green">settings</strong> tab.
+                    </p>
+                </div>
+            </div>
+
+            <div class="tutorial-panel" id="5">
+                <div class="modal-header tutorial-header">
+                    <h4 class="modal-title"><strong>You're almost ready</strong></h4>
+                </div>
+                <div class="modal-body tutorial-body">
+                    <p>Before you dive in, you might want to try out a few voice commands. </p>
+
+                    <p>Simply say, "Time <strong class="strong-green-starter">(champion)</strong> Flash"</p>
+
+                    <p>or</p>
+
+                    <p>"Time <strong class="strong-green">Bottom Scuttle</strong>"</p>
+
+                    <div>Make sure to click on the
+                        <div class="tut-badge badge-tut"><i class="fa fa-clock-o"></i></div>
+                        icons for other useful tips and guides to help you navigate the dashboard.
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer tutorial-footer">
+                <button type="button" class="btn btn-default skip" data-dismiss="modal">Skip</button>
+                <button type="button" class="btn btn-primary next">Next</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="tut-1" style="display: none;">
+
+    <div class="tut-badge badge-1">
+        <i class="fa fa-clock-o"></i>
+    </div>
+
+    <div class="panel panel-default box arrow-left-center tutorial-notification" id="content-1">
+        <div class="panel-heading">
+            <h3 class="panel-title"><strong>Under the Hood</strong></h3>
+        </div>
+        <div class="panel-body">
+            <p>This is your <strong>configuration panel</strong>.</p>
+
+            <p>You can customize feedback volume, reminder timing, and the <strong>map ticker</strong> speed. Toggle the
+                dashboard gadgets in the <strong>extras</strong> tab (hover over each gadget for an in-depth explanation
+                on what each does), and access a reference to the <strong>voice commands</strong>.</p>
+
+            <p>If you get lost, just click the <strong>tutorial</strong> tab to open some helpful tips to get you up to
+                speed.</p>
+        </div>
+        <div class="panel-footer tutorial-footer">
+            <span>Seen this before? <a class="tip-skip">Skip the tips</a></span>
+            <button type="button" class="btn btn-primary next tut-close" style="float: right;">Got It!</button>
+        </div>
+    </div>
+
+</div>
+
+<div class="tut-4" style="display: none;">
+
+    <div class="tut-badge badge-4">
+        <i class="fa fa-clock-o"></i>
+    </div>
+
+    <div class="panel panel-default box-top arrow-right-top tutorial-notification" id="content-4">
+        <div class="panel-heading">
+            <h3 class="panel-title"><strong>Time is Money</strong></h3>
+        </div>
+        <div class="panel-body">
+            <p>This is the <strong>timer surface</strong>.</p>
+
+            <p>Whenever you start a timer, either manually from the <strong>player dashboard</strong> or through a
+                <strong>voice command</strong>, it will pop up here. The timer will begin to countdown as soon as it
+                enters the timer surface. The color indicator around the timer will slowly fade to <strong
+                        class="strong-red">red</strong> when it's almost up.</p>
+
+            <p>If you want to clear a timer, simply click on it. If you want to clear the whole timer surface, click on
+                the <strong>"Active Timers"</strong> banner above.</p>
+        </div>
+        <div class="panel-footer tutorial-footer">
+            <span>Seen this before? <a class="tip-skip">Skip the tips</a></span>
+            <button type="button" class="btn btn-primary next tut-close" style="float: right;">Got It!</button>
+        </div>
+    </div>
+
+</div>
+
+<div class="unsupported">
+    <h4>It looks like your browser doesn't support speech recognition.</h4>
+
+    <p>Chrome is the only modern browser that fully supports speech capabilities. You can download chrome <a
+                href="https://www.google.com/chrome/browser/desktop/">here</a>.</p>
+</div>
+
+</body>
+</html>
