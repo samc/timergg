@@ -3,13 +3,16 @@ var router = express.Router();
 var najax = require('najax');
 var http = require('http');
 var app = require('../app.js');
-var api_key = '';
+var api_key, activeDomain = '';
 var fs = require('fs');
+
 fs.readFile('api_key.txt', 'utf8', function (err, data) {
     api_key = data;
 });
 
 router.get('/', function (req, res) {
+    activeDomain = app.activeDomain;
+    console.log('tut');
     var url = req.originalUrl;
     if (url == '/tutorial') {
         najax({
@@ -23,16 +26,16 @@ router.get('/', function (req, res) {
                         var testName = resp['gameList'][i]['participants'][1]['summonerName'];
                         testName = testName.split(' ').join('');
                         found = true;
-                        res.redirect('https://timer.gg/dashboard/playerName=' + testName + '/na');
+                        res.redirect(activeDomain+'/dashboard/playerName=' + testName + '/na');
                         break;
                     }
                 }
                 if (!found) {
-                    res.redirect('https://timer.gg/#error4');
+                    res.redirect(activeDomain+'/#error4');
                 }
             },
             error: function (e) {
-                res.redirect('https://timer.gg/#error4');
+                res.redirect(activeDomain+'/#error4');
             }
         })
     }

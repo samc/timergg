@@ -37,6 +37,15 @@ app.use('/dashboard/*', dashboard);
 app.use('/legal', legal);
 app.use('/developers', developers);
 
+var fs = require('fs');
+var activeDomain = '';
+
+fs.readFile('activeDomain.txt', 'utf8', function (err, data){
+    var json = JSON.parse(data);
+    activeDomain = json["url1"];
+    exports.activeDomain = activeDomain;
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
@@ -48,7 +57,7 @@ app.use(function (req, res, next) {
 // production error handler
 // no stacktraces leaked to user
 app.use(function (err, req, res, next) {
-    res.redirect('https://localhost:3000/#error5'); //change to timer.gg for relaunch
+    res.redirect(activeDomain+'/#error5');
 });
 
 module.exports = app;
@@ -76,11 +85,3 @@ najax({
         console.log('API call for mastery list was unsuccessful');
     }
 });
-
-
-
-
-
-
-
-

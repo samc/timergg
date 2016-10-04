@@ -174,5 +174,7 @@ $(document).ready(function () {
         alertCont.text("You tried to connect to many times, try again shortly");
     }
 });
+//testing
+[1,2,3].map(n => console.log(n + 1));
 
 

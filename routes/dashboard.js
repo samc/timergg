@@ -4,7 +4,7 @@ var najax = require('najax');
 var http = require('http');
 var app = require('../app.js');
 var fs = require('fs');
-var api_key = '';
+var api_key, activeDomain = '';
 
 fs.readFile('api_key.txt', 'utf8', function (err, data) {
     api_key = data;
@@ -28,6 +28,7 @@ router.get('/', function (req, res) {
     var splitName = splitCon[1].split('+').join('');
     var splitCall = decodeURI(splitName).toLowerCase();
     var reg = url.split('/').pop();
+    activeDomain = app.activeDomain;
 
     var regionRef = {
         na: 'NA1',
@@ -597,7 +598,7 @@ router.get('/', function (req, res) {
                     var correctCase = resp[splitCall].name;
                 }
                 catch (e) {
-                    res.redirect('https://localhost:3000/#error4'); //change to timer.gg for relaunch
+                    res.redirect(activeDomain+'/#error4');
                     return;
                 }
                 najax({
@@ -651,23 +652,23 @@ router.get('/', function (req, res) {
                                 masteries: app.masteryList
                             });
                         } else { //!classic mode
-                            res.redirect('https://localhost:3000/#error3');
+                            res.redirect(activeDomain+'/#error3');
                             res.end();
                         }
                     },
                     error: function () { //player !inGame
-                        res.redirect('https://localhost:3000/#error2');
+                        res.redirect(activeDomain+'/#error2');
                         res.end();
                     }
                 })
             },
             error: function () { //playerName !exist
-                res.redirect('https://localhost:3000/#error1');
+                res.redirect(activeDomain+'/#error1');
                 res.end();
             }
         })
     } else {
-        res.redirect('https://localhost:3000/#error');
+        res.redirect(activeDomain+'/#error');
         res.end();
     }
 });
