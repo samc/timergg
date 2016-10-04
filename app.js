@@ -42,7 +42,7 @@ var activeDomain = '';
 
 fs.readFile('activeDomain.txt', 'utf8', function (err, data){
     var json = JSON.parse(data);
-    activeDomain = json["url1"];
+    activeDomain = json["url2"];
     exports.activeDomain = activeDomain;
 });
 
