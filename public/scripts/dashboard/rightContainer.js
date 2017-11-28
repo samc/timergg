@@ -16,6 +16,7 @@ app.controller('rightController', function($scope) {
     $scope.askTimer = '';
     $scope.askTimerDur = '';
     $scope.askChamp = '';
+
     //listen for timer creation in timer surface and initialize dashboard cool down
     $(document).arrive('.tmr', function () {
         var el = $(this);
@@ -386,7 +387,7 @@ app.controller('rightController', function($scope) {
     };
 
 
-    var allyTeam = $("#uidAlly").html();
+    var allyTeam = $('#uidAlly').html();
     var enemyTeam = $('#uidEnemy').html();
 
     allyTeam = JSON.parse(allyTeam);

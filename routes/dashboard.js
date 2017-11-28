@@ -588,36 +588,39 @@ router.get('/', function (req, res) {
     if (checkInputIsAlphaNumeric(splitName) === null && checkInputIsAlphaNumeric(reg) === null && isAdequateLength(splitName)) {
         var eTeam = [];
         var aTeam = [];
+        console.log('https://' + regionRef[reg]+ '.api.riotgames.com/lol/summoner/v3/summoners/by-name/' + splitName + '?api_key=' + api_key);
         najax({
-            url: 'https://' + reg + '.api.pvp.net/api/lol/' + reg + '/v1.4/summoner/by-name/' + splitName + '?api_key=' + api_key,
+            url: 'https://' + regionRef[reg]+ '.api.riotgames.com/lol/summoner/v3/summoners/by-name/' + splitName + '?api_key=' + api_key,
             type: 'POST',
             dataType: 'json',
             success: function (resp) {
+                console.log(resp);
                 try {
-                    var playerID = resp[splitCall].id;
-                    var correctCase = resp[splitCall].name;
+                    var playerID = resp.accountId;
+                    var correctCase = resp.name;
                 }
                 catch (e) {
                     res.redirect(activeDomain+'/#error4');
                     return;
                 }
                 najax({
-                    url: 'https://' + reg + '.api.pvp.net/observer-mode/rest/consumer/getSpectatorGameInfo/' + regionRef[reg] + '/' + playerID + '?api_key=' + api_key,
+                    url: 'https://' + regionRef[reg] + '.api.riotgames.com/lol/spectator/v3/active-games/by-summoner/' + playerID + '?api_key=' + api_key,
                     type: 'POST',
                     dataType: 'json',
                     success: function (r) {
+                        console.log(r);
                         var gameLength = r['gameLength'];
                         var gameMode = r['gameMode'];
                         var participants = r['participants'];
                         for (var player in participants) {
                             var pName = participants[player]['summonerName'];
-                            if (pName == correctCase) {
+                            if (pName === correctCase) {
                                 var allyTeamId = participants[player]['teamId'];
                                 break;
                             }
                         }
                         for (var p in r['participants']) {
-                            if (participants[p]['teamId'] != allyTeamId) {
+                            if (participants[p]['teamId'] !== allyTeamId) {
                                 eTeam.push({
                                     summonerName: participants[p]['summonerName'],
                                     championId: participants[p]['championId'],
@@ -641,7 +644,7 @@ router.get('/', function (req, res) {
                         }
 
                         //render dashboard
-                        if (gameMode == 'CLASSIC' || gameMode == 'ARAM') {
+                        if (gameMode === 'CLASSIC' || gameMode === 'ARAM') {
                             res.render('dashboard', {
                                 title: 'TIMER.GG',
                                 playerInstance: correctCase,

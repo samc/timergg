@@ -1,44 +1,74 @@
-var express = require('express');
-var router = express.Router();
-var najax = require('najax');
-var http = require('http');
-var app = require('../app.js');
-var api_key, activeDomain = '';
-var fs = require('fs');
+let express = require('express'),
+    router = express.Router(),
+    najax = require('najax'),
+    app = require('../app.js'),
+    api_key, activeDomain = '',
+    fs = require('fs');
 
 fs.readFile('api_key.txt', 'utf8', function (err, data) {
     api_key = data;
 });
 
 router.get('/', function (req, res) {
-    activeDomain = app.activeDomain;
     console.log('tut');
-    var url = req.originalUrl;
-    if (url == '/tutorial') {
-        najax({
-            url: 'https://na.api.pvp.net/observer-mode/rest/featured?api_key=' + api_key,
-            type: 'POST',
-            dataType: 'json',
-            success: function (resp) {
-                var found = false;
-                for (var i = 0; i < resp['gameList'].length; i++) {
-                    if (resp['gameList'][i]['gameMode'] == 'CLASSIC' || resp['gameList'][i]['gameMode'] == 'ARAM') {
-                        var testName = resp['gameList'][i]['participants'][1]['summonerName'];
-                        testName = testName.split(' ').join('');
-                        found = true;
-                        res.redirect(activeDomain+'/dashboard/playerName=' + testName + '/na');
-                        break;
-                    }
+
+    let eTeam = [],
+        aTeam = [];
+    najax({
+        url: 'https://na1.api.riotgames.com/lol/spectator/v3/featured-games?api_key=' + api_key,
+        type: 'POST',
+        dataType: 'json',
+        success: function (r) {
+            console.log(r);
+            r = r['gameList'][0];
+
+            const gameLength = r['gameLength'],
+                gameMode = r['gameMode'],
+                participants = r['participants'],
+                allyTeamId = 100;
+
+            for (let p = 0; p < r['participants'].length; p++) {
+                if (participants[p]['teamId'] !== allyTeamId) {
+                    eTeam.push({
+                        summonerName: participants[p]['summonerName'],
+                        championId: participants[p]['championId'],
+                        spell1Id: participants[p]['spell1Id'],
+                        spell2Id: participants[p]['spell2Id'],
+                        teamId: participants[p]['teamId']
+                    });
+                } else {
+                    aTeam.push({
+                        summonerName: participants[p]['summonerName'],
+                        championId: participants[p]['championId'],
+                        spell1Id: participants[p]['spell1Id'],
+                        spell2Id: participants[p]['spell2Id'],
+                        teamId: participants[p]['teamId']
+                    });
                 }
-                if (!found) {
-                    res.redirect(activeDomain+'/#error4');
-                }
-            },
-            error: function (e) {
-                res.redirect(activeDomain+'/#error4');
             }
-        })
-    }
+
+            //render dashboard
+            if (gameMode === 'CLASSIC' || gameMode === 'ARAM') {
+                res.render('dashboard', {
+                    title: 'TIMER.GG',
+                    playerInstance: participants[0]['summonerName'],
+                    enemyTeam: eTeam,
+                    allyTeam: aTeam,
+                    gameLength: gameLength,
+                    runes: app.runeList,
+                    masteries: app.masteryList
+                });
+            } else { //!classic mode
+                res.redirect(activeDomain + '/#error3');
+                res.end();
+            }
+        },
+        error: function () { //player !inGame
+            res.redirect(activeDomain + '/#error2');
+            res.end();
+        }
+    })
+
 });
 
 module.exports = router;

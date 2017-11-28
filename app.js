@@ -42,7 +42,7 @@ var activeDomain = '';
 
 fs.readFile('activeDomain.txt', 'utf8', function (err, data){
     var json = JSON.parse(data);
-    activeDomain = json["url2"];
+    activeDomain = json["url1"];
     exports.activeDomain = activeDomain;
 });
 
@@ -63,7 +63,7 @@ app.use(function (err, req, res, next) {
 module.exports = app;
 
 najax({
-    url: 'https://global.api.pvp.net/api/lol/static-data/na/v1.2/rune?api_key=804a0b1e-6f03-4124-94eb-7b64f48c5701',
+    url: 'https://global.api.pvp.net/api/lol/static-data/na/v1.2/rune?api_key=RGAPI-e4d3a7b2-253c-472f-9da0-eb74199b9f79',
     type: 'POST',
     dataType: 'json',
     success: function (resp) {
@@ -71,11 +71,12 @@ najax({
     },
     error: function () {
         console.log('API call for rune list was unsuccessful');
+        exports.runeList = [];
     }
 });
 
 najax({
-    url: 'https://global.api.pvp.net/api/lol/static-data/na/v1.2/mastery?api_key=804a0b1e-6f03-4124-94eb-7b64f48c5701',
+    url: 'https://global.api.pvp.net/api/lol/static-data/na/v1.2/mastery?api_key=RGAPI-e4d3a7b2-253c-472f-9da0-eb74199b9f79',
     type: 'POST',
     dataType: 'json',
     success: function (resp) {
@@ -83,5 +84,6 @@ najax({
     },
     error: function () {
         console.log('API call for mastery list was unsuccessful');
+        exports.masteryList = [];
     }
 });
