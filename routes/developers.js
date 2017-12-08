@@ -5,12 +5,9 @@ var router = express.Router();
 router.get('/', function (req, res, next) {
     res.render('developers', {
 
-        title: 'TIMER.GG',
+        title: 'TIMER.GG'
 
     });
 });
 
 module.exports = router;
-/**
- * Created by Master on 2/6/2016.
- */
