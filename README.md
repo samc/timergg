@@ -24,8 +24,8 @@ TIMER.GG also features a few **extras** that you can equip that aim to improve t
 
 ## Color Scheme
 
-- ![#a4ba53](https://placehold.it/15/a4ba53/000000?text=+) `#a4ba53`
 - ![#ffffff](https://placehold.it/15/ffffff/000000?text=+) `#ffffff`
+- ![#a4ba53](https://placehold.it/15/a4ba53/000000?text=+) `#a4ba53`
 - ![#222222](https://placehold.it/15/222222/000000?text=+) `#222222`
 
 ## Fonts
