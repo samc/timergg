@@ -18,7 +18,7 @@ var app = express();
 
 app.use(cors());
 // view engine setup
-app.set('views', path.join(__dirname, './views'));
+app.set('views', path.join(__dirname, './public/views'));
 app.set('view engine', 'ejs');
 
 app.use(favicon(__dirname + '/public/images/fav.ico'));
@@ -42,7 +42,7 @@ var activeDomain = '';
 
 fs.readFile('activeDomain.txt', 'utf8', function (err, data){
     var json = JSON.parse(data);
-    activeDomain = json["url1"];
+    activeDomain = json["url2"];
     exports.activeDomain = activeDomain;
 });
 
@@ -56,34 +56,6 @@ app.use(function (req, res, next) {
 // error handlers
 // production error handler
 // no stacktraces leaked to user
-app.use(function (err, req, res, next) {
-    res.redirect(activeDomain+'/#error5');
-});
+
 
 module.exports = app;
-
-najax({
-    url: 'https://global.api.pvp.net/api/lol/static-data/na/v1.2/rune?api_key=RGAPI-e4d3a7b2-253c-472f-9da0-eb74199b9f79',
-    type: 'POST',
-    dataType: 'json',
-    success: function (resp) {
-        exports.runeList = resp['data'];
-    },
-    error: function () {
-        console.log('API call for rune list was unsuccessful');
-        exports.runeList = [];
-    }
-});
-
-najax({
-    url: 'https://global.api.pvp.net/api/lol/static-data/na/v1.2/mastery?api_key=RGAPI-e4d3a7b2-253c-472f-9da0-eb74199b9f79',
-    type: 'POST',
-    dataType: 'json',
-    success: function (resp) {
-        exports.masteryList = resp['data'];
-    },
-    error: function () {
-        console.log('API call for mastery list was unsuccessful');
-        exports.masteryList = [];
-    }
-});

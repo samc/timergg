@@ -2,88 +2,6 @@ app.controller('middleController', function ($scope) {
     $scope.enemyList = {};
 });
 
-$(document).ready(function () {
-    $('.runes').hover(
-        function () {
-            $(this).find('ul').css('display', 'block')
-        },
-        function () {
-            $(this).find('ul').css('display', 'none')
-        }
-    )
-});
-
-// $(document).ready(function () {
-//     var enemyTeam = $("#uidEnemy").html();
-//     var staticMasteries = $("#uid_masStatic").html();
-//     enemyTeam = JSON.parse(enemyTeam);
-//     staticMasteries = JSON.parse(staticMasteries);
-//     for (var z = 0; z < enemyTeam.length; z++) {
-//
-//         for (var zz = 0; zz < enemyTeam[z]['masteryIds'].length; zz++) {
-//
-//             var masteryWrapper = $('.enemy').eq(z);
-//             var masteryInit = enemyTeam[z]['masteryIds'][zz]['masteryId'];
-//             var masteryRank = enemyTeam[z]['masteryIds'][zz]['rank'];
-//             var masteryDesc = staticMasteries[masteryInit.toString()]['description'][masteryRank - 1];
-//             var masteryRef = masteryWrapper.find('.points');
-//
-//             for (var zzz = 0; zzz < masteryRef.length; zzz++) {
-//                 if (masteryInit == masteryRef.eq(zzz).attr('id')) {
-//                     if (masteryInit == '6241') masteryWrapper.find('.player-sector-distortion').data('insight', true);
-//                     var masteryRankCont = masteryWrapper.find('.points').eq(zzz).text().replace('0', masteryRank);
-//                     masteryWrapper.find('.points').eq(zzz).text(masteryRankCont);
-//                     masteryWrapper.find('.item-description').eq(zzz).text(masteryDesc);
-//                     masteryWrapper.find('.talent-icon-container').eq(zzz).toggleClass('icon-active');
-//                     masteryWrapper.find('.points').eq(zzz).toggleClass('points-active');
-//                     masteryWrapper.find('.sprite').eq(zzz).css('background-position-y', 0);
-//                 }
-//             }
-//         }
-//
-//     }
-// });
-// $(document).ready(function () {
-//     var allyTeam = $("#uidAlly").html();
-//     var staticMasteries = $("#uid_masStatic").html();
-//     allyTeam = JSON.parse(allyTeam);
-//     staticMasteries = JSON.parse(staticMasteries);
-//     for (var z = 0; z < allyTeam.length; z++) {
-//
-//         for (var zz = 0; zz < allyTeam[z]['masteryIds'].length; zz++) {
-//
-//             var masteryWrapper = $('.ally').eq(z);
-//             var masteryInit = allyTeam[z]['masteryIds'][zz]['masteryId'];
-//             var masteryRank = allyTeam[z]['masteryIds'][zz]['rank'];
-//             var masteryDesc = staticMasteries[masteryInit.toString()]['description'][masteryRank - 1];
-//             var masteryRef = masteryWrapper.find('.points');
-//
-//             for (var zzz = 0; zzz < masteryRef.length; zzz++) {
-//                 if (masteryInit == masteryRef.eq(zzz).attr('id')) {
-//                     if (masteryInit == '6241') masteryWrapper.find('.player-sector-distortion').data('insight', true);
-//                     var masteryRankCont = masteryWrapper.find('.points').eq(zzz).text().replace('0', masteryRank);
-//                     masteryWrapper.find('.points').eq(zzz).text(masteryRankCont);
-//                     masteryWrapper.find('.item-description').eq(zzz).text(masteryDesc);
-//                     masteryWrapper.find('.talent-icon-container').eq(zzz).toggleClass('icon-active');
-//                     masteryWrapper.find('.points').eq(zzz).toggleClass('points-active');
-//                     masteryWrapper.find('.sprite').eq(zzz).css('background-position-y', 0);
-//                 }
-//             }
-//         }
-//
-//     }
-// });
-// $(document).ready(function () {
-//     var tips = $('.talent-icon-container');
-//     for (var i = 0; i < tips.length; i++) {
-//         var header = tips.eq(i).find('h2').text();
-//         var desc = tips.eq(i).find('.item-description').text();
-//         desc = desc.split('&lt;br&gt;&lt;br&gt;').join(' ');
-//         new Opentip(tips.eq(i), desc, header, {style: 'glass'});
-//         Opentip.lastZIndex = 9999;
-//     }
-// });
-
 function startTimer(ssName, champName) {
     var scope = angular.element(document.getElementById("rightWrap")).scope();
     scope.timerStart(ssName, champName);
@@ -124,31 +42,6 @@ var toggleLucidity = function (int) {
         $(int).data('lucidity', false);
     }
 };
-
-// $(document).ready(function () {
-//     var runes = $('.runes');
-//     for (var i = 0; i < runes.length; i++) {
-//
-//         for (var ii = 0; ii < runes.eq(i).find('a').length; ii++) {
-//             var b = runes.eq(i).find('a').eq(ii);
-//             var runeInit = b.text().replace(/[0-9.]/g, '');
-//
-//             for (var iii = 0; iii < runes.eq(i).find('a').length; iii++) {
-//                 var c = runes.eq(i).find('a').eq(iii);
-//                 var runeInitNext = c.text().replace(/[0-9.]/g, '');
-//
-//                 if (runeInitNext == runeInit && iii != ii) {
-//
-//                     if (parseInt(b.text().split(' ').shift()) > parseInt(c.text().split(' ').shift())) {
-//
-//                         c.remove();
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// });
-
 
 $(document).ready(function () {
     var enemy = document.getElementById('enemySort');
@@ -313,6 +206,9 @@ var updateCont = function (el) {
 
 };
 $(document).ready(function () {
+    $('.tut-badge.badge-3').click(function(e){
+        e.preventDefault();
+    });
     $('.cs-ticker').click(function () {
         $(this).find('span').toggleClass('fa-pause');
     });
@@ -436,9 +332,10 @@ $(document).ready(function () {
         var playerName = $(this).text();
         var url = window.location.href;
         var reg = url.split('/').pop();
+        if (reg === 'tutorial') reg = 'na';
         reg = reg + '.';
         playerName = decodeURI(playerName);
-        if (reg == 'kr.') reg = '';
+        if (reg === 'kr.') reg = '';
         window.location.href = 'http://' + reg + 'op.gg/summoner/userName=' + playerName;
     });
 });
@@ -446,15 +343,15 @@ $(document).ready(function () {
 $(document).ready(function () {
 
     var tut1 = localStorage.getItem('tut-1');
-    if (tut1 != 'true') $('.tut-1').fadeIn();
+    if (tut1 !== 'true') $('.tut-1').fadeIn();
     var tut2 = localStorage.getItem('tut-2');
-    if (tut2 != 'true') $('.tut-2').fadeIn();
+    if (tut2 !== 'true') $('.tut-2').fadeIn();
     var tut3 = localStorage.getItem('tut-3');
-    if (tut3 != 'true') $('.tut-3').fadeIn();
+    if (tut3 !== 'true') $('.tut-3').fadeIn();
     var tut4 = localStorage.getItem('tut-4');
-    if (tut4 != 'true') $('.tut-4').fadeIn();
+    if (tut4 !== 'true') $('.tut-4').fadeIn();
     var tut5 = localStorage.getItem('tut-5');
-    if (tut5 != 'true') $('.tut-5').fadeIn();
+    if (tut5 !== 'true') $('.tut-5').fadeIn();
 
     $('.tut-badge').click(function () {
         $('.tutorial-notification').fadeOut();
@@ -539,14 +436,4 @@ $(document).ready(function () {
         scope.currentChampionIdRef = champId;
     });
 });
-
-function getFileExtension(i) {
-
-    // i will be a string, but it may not have a file extension.
-    // return the file extension (with no period) if it has one, otherwise false
-
-    return (i.split('.').pop());
-
-
-}
 

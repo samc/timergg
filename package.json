@@ -26,9 +26,6 @@
     "scrollreveal": "2.3.2",
     "serve-favicon": "~2.3.0"
   },
-  "devDependencies": {
-    "babel-cli": "^6.16.0"
-  },
   "presets": [
     "es2015"
   ]

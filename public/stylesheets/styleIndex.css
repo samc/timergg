@@ -191,7 +191,7 @@ body {
   padding-top: 5px;
   font-family: 'Montserrat';
   font-size: 27px;
-  height: 37px;
+  height: 39px;
   text-decoration: none;
   opacity: 0.7;
   overflow: hidden;
@@ -245,7 +245,7 @@ nav ul li a {
   padding: 10px 15px;
   position: relative;
   text-decoration: none;
-  font: 16px 'Montserrat';
+  font: 600 16px 'Montserrat';
   color: #ADADAD;
 }
 
@@ -268,7 +268,7 @@ nav ul li .standard-nav:after {
   bottom: 0;
   border-radius: 25%;
   width: 100%;
-  height: 0px;
+  height: 0;
   text-decoration: none;
   background-color: #a4ba53;
   -webkit-transition: height .1s linear;
@@ -281,7 +281,7 @@ nav ul li .standard-nav:hover:after {
 
 .centerHeader {
   position: relative;
-  margin-top: 180px;
+  padding-top: 180px;
   text-align: center;
 }
 
@@ -414,11 +414,13 @@ h2 {
   visibility: visible;
   width: 1200px;
   height: 1200px;
-  margin-top: -850px;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -49%, 0);
   border-radius: 50%;
   border: 35px solid #EEEEEE;
   background-color: #fff;
-  position: relative;
+  position: absolute;
 }
 
 .hand {
@@ -515,7 +517,6 @@ label:hover {
   font: 30px 'Montserrat';
   color: #fff;
   width: 100%;
-  top: -100px;
   background-color: #42464b;
   display: block;
   overflow: hidden;
@@ -531,7 +532,7 @@ label:hover {
   flex-direction: row;
   position: relative;
   width: 100%;
-  top: -100px;
+
   display: block;
   overflow: auto;
   background-color: white;
@@ -583,7 +584,8 @@ label:hover {
   display: none;
   width: 50%;
   text-align: center;
-  margin: -620px auto 0 auto;
+  top: 20px;
+  margin: 0 auto;
   position: relative;
 }
 
@@ -1149,7 +1151,7 @@ header h1 {
 }
 
 .centerContainer {
-  min-height: 800px;
+  height: 100%;
 }
 
 .faq-header {

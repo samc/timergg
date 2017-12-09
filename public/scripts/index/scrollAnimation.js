@@ -107,7 +107,7 @@ jQuery(document).ready(function ($) {
             closeFaqsContainer.addClass('move-left');
             $('body').addClass('cd-overlay');
         } else {
-            $('body,html').animate({'scrollTop': target.offset().top - 19}, 200);
+            $('body html').animate({'scrollTop': target.offset().top - 19}, 200);
         }
     });
 
@@ -142,7 +142,7 @@ $(document).ready(function () {
     var alertCont = $('.alert-cont');
     var url = window.location.href;
     var urlPop = url.split('/').pop();
-    var savedReg = localStorage.getItem('player-region');
+    var savedReg = (localStorage.getItem('player-region') === null)? 'NA' : localStorage.getItem('player-region');
     savedReg = savedReg.toUpperCase();
     $('#' + savedReg).prop('checked', true);
     if (urlPop.indexOf('#error') !== -1) {
@@ -152,29 +152,27 @@ $(document).ready(function () {
         $('.centerHeader').css('animation', 'none');
         $('.subHeader').css('animation', 'none');
     }
-    if (urlPop == '#error') {
+    if (urlPop === '#error') {
         alertCont.text("The player name you entered does not exist.");
     }
-    else if (urlPop == '#error1') {
+    else if (urlPop === '#error1') {
         alertCont.text("The player name you entered does not exist.");
     }
-    else if (urlPop == '#error2') {
+    else if (urlPop === '#error2') {
         alertCont.text("Active game not found, make sure summoner is in active game.");
     }
-    else if (urlPop == '#error3') {
+    else if (urlPop === '#error3') {
         alertCont.text("Make sure you're in a normal or ranked game type.");
     }
-    else if (urlPop == '#error4') {
+    else if (urlPop === '#error4') {
         alertCont.text("There was an issue grabbing data from Riot, try again shortly.");
     }
-    else if (urlPop == '#error5') {
+    else if (urlPop === '#error5') {
         alertCont.text("Looks like what you were looking for doesn't exist.");
     }
-    else if (urlPop == '#error6') {
+    else if (urlPop === '#error6') {
         alertCont.text("You tried to connect to many times, try again shortly");
     }
 });
-//testing
-[1,2,3].map(n => console.log(n + 1));
 
 

@@ -1,5 +1,5 @@
 {
-  "url1": "http://localhost:3000",
+  "url1": "http://localhost:80",
   "url2": "https://timergg.herokuapp.com",
   "url3": "https://timer.gg"
 }

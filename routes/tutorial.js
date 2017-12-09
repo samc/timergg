@@ -1,18 +1,18 @@
-let express = require('express'),
+var express = require('express'),
     router = express.Router(),
     najax = require('najax'),
     app = require('../app.js'),
     api_key, activeDomain = '',
     fs = require('fs');
 
-fs.readFile('api_key.txt', 'utf8', function (err, data) {
+fs.readFile('apiKey.txt', 'utf8', function (err, data) {
     api_key = data;
 });
 
 router.get('/', function (req, res) {
     console.log('tut');
 
-    let eTeam = [],
+    var eTeam = [],
         aTeam = [];
     najax({
         url: 'https://na1.api.riotgames.com/lol/spectator/v3/featured-games?api_key=' + api_key,
@@ -27,7 +27,7 @@ router.get('/', function (req, res) {
                 participants = r['participants'],
                 allyTeamId = 100;
 
-            for (let p = 0; p < r['participants'].length; p++) {
+            for (var p = 0; p < r['participants'].length; p++) {
                 if (participants[p]['teamId'] !== allyTeamId) {
                     eTeam.push({
                         summonerName: participants[p]['summonerName'],
@@ -49,6 +49,7 @@ router.get('/', function (req, res) {
 
             //render dashboard
             if (gameMode === 'CLASSIC' || gameMode === 'ARAM') {
+                console.log('render dashboard');
                 res.render('dashboard', {
                     title: 'TIMER.GG',
                     playerInstance: participants[0]['summonerName'],
@@ -59,12 +60,12 @@ router.get('/', function (req, res) {
                     masteries: app.masteryList
                 });
             } else { //!classic mode
-                res.redirect(activeDomain + '/#error3');
+                res.redirect('/#error3');
                 res.end();
             }
         },
         error: function () { //player !inGame
-            res.redirect(activeDomain + '/#error2');
+            res.redirect('/#error2');
             res.end();
         }
     })
