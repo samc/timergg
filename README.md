@@ -17,11 +17,21 @@ After a quick tutorial, you'll be introduced to the **Player Dashboard**, a dyna
 
 TIMER.GG also features a few **extras** that you can equip that aim to improve the core fundamentals of wave control and map awareness, along with some nifty modifications to the dashboard:
 
-
 * Map Awareness Ticker: Every beat reminds you to take a quick look at your minimap
 * Cannon Wave Notifier: Alerts you when a cannon wave leaves the base
 * Map Display: Interactive map of the rift that you can use to trigger objective timers
 * Ally Team: Enables timing of your allies summoner spells and interactive player banners
+
+## Color Scheme
+
+- ![#a4ba53](https://placehold.it/15/a4ba53/000000?text=+) `#a4ba53`
+- ![#ffffff](https://placehold.it/15/ffffff/000000?text=+) `#ffffff`
+- ![#222222](https://placehold.it/15/222222/000000?text=+) `#222222`
+
+## Fonts
+
+- [Montserrat](https://www.fontsquirrel.com/fonts/montserrat)
+- Arial, Helvetica
 
 ## Built With
 
@@ -44,6 +54,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* The countless friends that provided input on the project
-* Inspiration
-* etc
+* The countless friends / players that provided input on the project
+
