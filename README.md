@@ -1,7 +1,8 @@
 # TIMER.GG
 
-TIMER.GG is an all inclusive timing website for all things League of Legends. The application itself is completely **voice activated** and features both visual and verbal feedback for all timers. This hands-free approach not only saves time, but also aims to minimize distractions and helps keep your focus on the important stuff. You can time almost anything:
+[Demo](https://timergg.herokuapp.com/tutorial)
 
+TIMER.GG is an all inclusive timing website for all things League of Legends. The application itself is completely **voice activated** and features both visual and verbal feedback for all timers. This hands-free approach not only saves time, but also aims to minimize distractions and helps keep your focus on the important stuff. You can time almost anything:
 
 * Summoner Spells
 * Baron
