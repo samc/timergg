@@ -10,9 +10,71 @@ TIMER.GG is an all inclusive timing website for all things League of Legends. Th
 * Scuttle Crab
 * Inhibitors
 
+## What TIMER.GG aims to solve
+
+In League of Legends, maintaining accurate timers for important points of contention throughout the game is a very important process necessary in higher level play. As someone who played predominantly support and jungle, playing around various timings - whether that be the midlaner's flash or the enemy raptor camp - drastically improved the way I thought about the game. However, the process of typing and constantly scrolling through chat to look for the relevant timers is rather tedious and time consuming in a mentally taxing game like LoL. TIMER.GG aims to streamline the timing process using voice recognition and an intuitive GUI - letting you focus and structure macro decisions around the current state of the game.
+
 ## Getting Started
 
 After a quick tutorial, you'll be introduced to the **Player Dashboard**, a dynamic interface that responds to your voice commands. As you time, the dashboard will record and display your information instantaneously - no fussing with typing out things ingame or fumbling over manual controls. Though the dashboard is entirely voice activated, you can always use the interactive GUI to control everything on the dashboard. Along with visual displays, the dashboard is also equipped with **Voice Assist**, providing you with verbal reminders when your cooldowns are almost up.
+
+## Voice Commands
+
+### Champions
+
+```
+"Time [champion] [summoner spell]"
+```
+
+```
+"[lucidity] [champion]"
+```
+
+### Jungle Monsters
+
+```
+"Time [**dragon**, **baron**, or **rift herald**]"
+```
+
+```
+"Time [**top** or **bot**] scuttle"
+```
+
+```
+"Time [**enemy** or **ally**] [**blue**, **red**, **gromp**, **wolves**, **raptors**, or **krugs**]"
+```
+
+### Inhibitors
+
+```
+"Time [lane] [**enemy** or **ally**] inhibitor"
+```
+
+### Lanes
+
+Any voice command that requires a **lane** can be called using the following:
+
+- "Top"
+- "Mid" or "Middle"
+- "Bot" or "Bottom"
+
+### Extras
+
+You can toggle any of the extras with:
+
+```
+"Toggle [**allies**, **ticker**, **display**, or **cannon**]"
+```
+
+You can also set the the intervals for the ticker and the reminder with:
+
+```
+"Ticker set (**1** - **10**) seconds"
+```
+
+```
+"Reminder set (**time in seconds**) seconds"
+```
 
 ## Extras
 
