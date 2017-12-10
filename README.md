@@ -2,7 +2,7 @@
 
 [Demo](https://timergg.herokuapp.com/tutorial)
 
-TIMER.GG is an all inclusive timing website for all things League of Legends. The application itself is completely **voice activated** and features both visual and verbal feedback for all timers. This hands-free approach not only saves time, but also aims to minimize distractions and helps keep your focus on the important stuff. You can time almost anything:
+TIMER.GG is an all inclusive timing website for all things League of Legends. The application itself is completely voice activated and features both visual and verbal feedback for all timers. This hands-free approach not only saves time, but also aims to minimize distractions and helps keep your focus on the important stuff. You can time almost anything:
 
 * Summoner Spells
 * Baron
@@ -16,7 +16,7 @@ In League of Legends, maintaining accurate timers for important points of conten
 
 ## Getting Started
 
-After a quick tutorial, you'll be introduced to the **Player Dashboard**, a dynamic interface that responds to your voice commands. As you time, the dashboard will record and display your information instantaneously - no fussing with typing out things ingame or fumbling over manual controls. Though the dashboard is entirely voice activated, you can always use the interactive GUI to control everything on the dashboard. Along with visual displays, the dashboard is also equipped with **Voice Assist**, providing you with verbal reminders when your cooldowns are almost up.
+After a quick tutorial, you'll be introduced to the Player Dashboard, a dynamic interface that responds to your voice commands. As you time, the dashboard will record and display your information instantaneously - no fussing with typing out things ingame or fumbling over manual controls. Though the dashboard is entirely voice activated, you can always use the interactive GUI to control everything on the dashboard. Along with visual displays, the dashboard is also equipped with Voice Assist, providing you with verbal reminders when your cooldowns are almost up.
 
 ## Voice Commands
 
@@ -33,26 +33,26 @@ After a quick tutorial, you'll be introduced to the **Player Dashboard**, a dyna
 ### Jungle Monsters
 
 ```
-"Time [**dragon**, **baron**, or **rift herald**]"
+"Time [dragon, baron, or rift herald]"
 ```
 
 ```
-"Time [**top** or **bot**] scuttle"
+"Time [top or bot] scuttle"
 ```
 
 ```
-"Time [**enemy** or **ally**] [**blue**, **red**, **gromp**, **wolves**, **raptors**, or **krugs**]"
+"Time [enemy or ally] [blue, red, gromp, wolves, raptors, or krugs]"
 ```
 
 ### Inhibitors
 
 ```
-"Time [lane] [**enemy** or **ally**] inhibitor"
+"Time [lane] [enemy or ally] inhibitor"
 ```
 
 ### Lanes
 
-Any voice command that requires a **lane** can be called using the following:
+Any voice command that requires a lane can be called using the following:
 
 - "Top"
 - "Mid" or "Middle"
@@ -63,22 +63,22 @@ Any voice command that requires a **lane** can be called using the following:
 You can toggle any of the extras with:
 
 ```
-"Toggle [**allies**, **ticker**, **display**, or **cannon**]"
+"Toggle [allies, ticker, display, or cannon]"
 ```
 
 You can also set the the intervals for the ticker and the reminder with:
 
 ```
-"Ticker set (**1** - **10**) seconds"
+"Ticker set [1 - 10] seconds"
 ```
 
 ```
-"Reminder set (**time in seconds**) seconds"
+"Reminder set [time in seconds] seconds"
 ```
 
 ## Extras
 
-TIMER.GG also features a few **extras** that you can equip that aim to improve the core fundamentals of wave control and map awareness, along with some nifty modifications to the dashboard:
+TIMER.GG also features a few extras that you can equip that aim to improve the core fundamentals of wave control and map awareness, along with some nifty modifications to the dashboard:
 
 * Map Awareness Ticker: Every beat reminds you to take a quick look at your minimap
 * Cannon Wave Notifier: Alerts you when a cannon wave leaves the base
